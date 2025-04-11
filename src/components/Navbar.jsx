@@ -45,29 +45,17 @@ const Navbar = () => {
           {user ? (
             <>
               <li>
-                <NavLink
-                  to="/home"
-                  onClick={() => setShowMenu(false)}
-                  className="hover:text-[#E11D48]"
-                >
+                <NavLink to="/home" className="hover:text-[#E11D48]">
                   Home
                 </NavLink>
               </li>
               <li>
-                <NavLink
-                  to="/about"
-                  onClick={() => setShowMenu(false)}
-                  className="hover:text-[#E11D48]"
-                >
+                <NavLink to="/about" className="hover:text-[#E11D48]">
                   About
                 </NavLink>
               </li>
               <li>
-                <NavLink
-                  to="/profile"
-                  onClick={() => setShowMenu(false)}
-                  className="hover:text-[#E11D48]"
-                >
+                <NavLink to="/profile" className="hover:text-[#E11D48]">
                   Profile
                 </NavLink>
               </li>
@@ -75,20 +63,12 @@ const Navbar = () => {
           ) : (
             <>
               <li>
-                <NavLink
-                  to="/signup"
-                  onClick={() => setShowMenu(false)}
-                  className="hover:text-[#E11D48]"
-                >
+                <NavLink to="/signup" className="hover:text-[#E11D48]">
                   Sign Up
                 </NavLink>
               </li>
               <li>
-                <NavLink
-                  to="/login"
-                  onClick={() => setShowMenu(false)}
-                  className="hover:text-[#E11D48]"
-                >
+                <NavLink to="/login" className="hover:text-[#E11D48]">
                   Login
                 </NavLink>
               </li>

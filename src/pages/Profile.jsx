@@ -7,6 +7,10 @@ import AccountInformation from "../components/Profile/AccountInformation";
 import DeleteAccount from "../components/Profile/DeleteAccount";
 import PostAJob from "../components/Profile/PostAJob";
 import PostAProject from "../components/Profile/PostAProject";
+import { doc, getDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { setUser } from "../redux/userSlice";
+import { db } from "../firebase/firebase";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -23,10 +27,34 @@ const Profile = () => {
 
   const handleLogout = async () => {
     await logout();
-    localStorage.removeItem("user");
     dispatch(closeMenu());
     navigate("/login");
   };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const auth = getAuth();
+      const loggedInUser = auth.currentUser;
+
+      if (loggedInUser) {
+        const uid = loggedInUser.uid;
+
+        try {
+          const docRef = doc(db, "users", uid);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            const freshData = docSnap.data();
+            dispatch(setUser(freshData));
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [dispatch]);
 
   const renderContent = () => {
     switch (selectedOption) {

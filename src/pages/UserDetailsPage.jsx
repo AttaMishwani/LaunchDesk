@@ -51,6 +51,7 @@ const UserDetailsPage = () => {
         github: formData.github,
         linkedin: formData.linkedin,
         type: currentUser.userType || "freelancer",
+        uid: currentUser.uid,
       });
 
       const updatedUserToRedux = {
@@ -62,6 +63,7 @@ const UserDetailsPage = () => {
         bio: formData.bio,
         github: formData.github,
         linkedin: formData.linkedin,
+        uid: currentUser.uid,
       };
 
       dispatch(setUser(updatedUserToRedux));

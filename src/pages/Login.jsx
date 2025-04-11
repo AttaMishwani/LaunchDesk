@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { login } from "../firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/userSlice";
 
@@ -84,12 +84,12 @@ const Login = () => {
 
         <p className="mt-6 text-sm text-center text-gray-600">
           Don't have an account?{" "}
-          <a
-            href="/signup"
+          <NavLink
+            to="/signup"
             className="text-[#4F46E5] font-medium hover:underline"
           >
             Sign Up
-          </a>
+          </NavLink>
         </p>
       </div>
     </div>

@@ -1,7 +1,7 @@
 // components/Signup.js
 import { useState } from "react";
 import { signUp } from "../firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/userSlice";
 
@@ -110,12 +110,12 @@ const Signup = () => {
 
         <p className="mt-6 text-sm text-center text-gray-600">
           Already have an account?{" "}
-          <a
-            href="/login"
+          <NavLink
+            to="/login"
             className="text-[#4F46E5] font-medium hover:underline"
           >
             Login
-          </a>
+          </NavLink>
         </p>
       </div>
     </div>
