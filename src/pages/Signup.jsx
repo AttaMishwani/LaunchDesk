@@ -20,7 +20,7 @@ const Signup = () => {
       const user = await signUp(email, password, userType);
       if (user) {
         console.log("✅ Signup success:", user);
-        dispatch(setUser(user)); // Store user in Redux
+        dispatch(setUser(user));
         navigate("/userdetailspage");
       }
     } catch (error) {

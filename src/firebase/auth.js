@@ -1,39 +1,42 @@
-import { doc, setDoc } from "firebase/firestore";
-import { auth, db } from "./firebase"; // Ensure you have initialized Firebase in this file
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged,
+} from "firebase/auth";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { auth, db } from "./firebase";
 
-// Sign Up Function
+// ✅ Sign Up
 export const signUp = async (email, password, userType) => {
     try {
-        // Create the user with email and password
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // Now, save the userType to Firestore under the user's document
+        // Store user info in Firestore
         await setDoc(doc(db, "users", user.uid), {
             email: user.email,
-            userType: userType, // Save the user type (freelancer or client)
-            createdAt: new Date(),
+            userType,
+            createdAt: serverTimestamp(), // More accurate than new Date()
         });
 
-        // Return the user object after saving userType in Firestore
         return user;
     } catch (error) {
         throw new Error(error.message);
     }
 };
-// Login Function
+
+// ✅ Login
 export const login = async (email, password) => {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        return userCredential.user; // Return user if successful
+        return userCredential.user;
     } catch (error) {
-        throw new Error(error.message); // Let the component catch it
+        throw new Error(error.message);
     }
 };
 
-
-// Logout Function
+// ✅ Logout
 export const logout = async () => {
     try {
         await signOut(auth);
@@ -42,7 +45,9 @@ export const logout = async () => {
     }
 };
 
-// Listen to Auth State Changes
+// ✅ Auth Listener (delayed safe fetch trigger)
 export const authStateListener = (callback) => {
-    return onAuthStateChanged(auth, callback);
+    return onAuthStateChanged(auth, (user) => {
+        callback(user);
+    });
 };

@@ -45,7 +45,7 @@ const Navbar = () => {
           {user ? (
             <>
               <li>
-                <NavLink to="/home" className="hover:text-[#E11D48]">
+                <NavLink to="/" className="hover:text-[#E11D48]">
                   Home
                 </NavLink>
               </li>
