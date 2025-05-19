@@ -17,7 +17,7 @@ const UserDetailsPage = () => {
     phone: "",
     education: "",
     skills: "",
-    bio: "",
+    confirmPassword: "",
     github: "",
     linkedin: "",
   });
@@ -47,7 +47,7 @@ const UserDetailsPage = () => {
         phone: formData.phone,
         education: formData.education,
         skills: skillsArray,
-        bio: formData.bio,
+        confirmPassword: formData.confirmPassword,
         github: formData.github,
         linkedin: formData.linkedin,
         type: currentUser.userType || "freelancer",
@@ -60,7 +60,7 @@ const UserDetailsPage = () => {
         phone: formData.phone,
         education: formData.education,
         skills: skillsArray,
-        bio: formData.bio,
+        confirmPassword: formData.confirmPassword,
         github: formData.github,
         linkedin: formData.linkedin,
         uid: currentUser.uid,
@@ -130,8 +130,8 @@ const UserDetailsPage = () => {
           </div>
 
           <textarea
-            name="bio"
-            placeholder="Short Bio"
+            name="confirmPassword"
+            placeholder="Short confirmPassword"
             rows={3}
             onChange={handleChange}
             className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"

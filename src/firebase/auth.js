@@ -3,6 +3,7 @@ import {
     signInWithEmailAndPassword,
     signOut,
     onAuthStateChanged,
+    sendEmailVerification,
 } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "./firebase";
@@ -12,6 +13,9 @@ export const signUp = async (email, password, userType) => {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
+
+        // send email verification
+        await sendEmailVerification(user)
 
         // Store user info in Firestore
         await setDoc(doc(db, "users", user.uid), {

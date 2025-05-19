@@ -29,7 +29,7 @@ const Navbar = () => {
       <nav className="max-w-[1300px] mx-auto flex items-center justify-between">
         <div className="logo">
           <NavLink to="/">
-            <h1 className="text-2xl font-bold text-[#F8FAFC]">FreelancerBox</h1>
+            <h1 className="text-2xl font-bold text-[#F8FAFC]">GetAJob</h1>
           </NavLink>
         </div>
 

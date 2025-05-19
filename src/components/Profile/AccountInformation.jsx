@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { db } from "../../firebase/firebase";
 import { useDispatch } from "react-redux";
 import { updateEditedUser } from "../../redux/userSlice";
+import { getDownloadURL, uploadBytes, ref } from "firebase/storage";
+import { storage } from "../../firebase/firebase"; // make sure storage is exported in firebase.js
 
 const AccountInformation = ({ user }) => {
   const dispatch = useDispatch();
@@ -21,6 +23,8 @@ const AccountInformation = ({ user }) => {
 
   const [editingMode, setEditingMode] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [resumeFile, setResumeFile] = useState(null);
+  const [uploading, setUploading] = useState(null);
 
   useEffect(() => {
     if (user && user.uid) {
@@ -34,6 +38,8 @@ const AccountInformation = ({ user }) => {
         bio: user.bio || "",
         github: user.github || "",
         linkedin: user.linkedin || "",
+        resumeName: user.resumeName || "",
+        resumeURL: user.resumeURL || "",
       });
       setLoading(false);
     }
@@ -44,7 +50,15 @@ const AccountInformation = ({ user }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleResumeUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setResumeFile(file);
+    }
+  };
+
   const handleEdit = () => setEditingMode(true);
+
   const handleCancel = () => {
     if (user && user.uid) {
       setFormData({
@@ -57,9 +71,12 @@ const AccountInformation = ({ user }) => {
         bio: user.bio || "",
         github: user.github || "",
         linkedin: user.linkedin || "",
+        resumeName: user.resumeName || "",
+        resumeURL: user.resumeURL || "",
       });
     }
     setEditingMode(false);
+    setResumeFile(null);
   };
 
   const handleSave = async () => {
@@ -71,11 +88,28 @@ const AccountInformation = ({ user }) => {
         return;
       }
 
+      if (resumeFile) {
+        setUploading(true);
+        const resumeRef = ref(storage, `resumes/${uid}/${resumeFile.name}`);
+        await uploadBytes(resumeRef, resumeFile);
+        const downloadURL = await getDownloadURL(resumeRef);
+        dataToUpdate.resumeURL = downloadURL;
+        dataToUpdate.resumeName = resumeFile.name;
+
+        setFormData((prev) => ({
+          ...prev,
+          resumeURL: downloadURL,
+          resumeName: resumeFile.name,
+        }));
+        setUploading(false);
+      }
+
       const userRef = doc(db, "users", uid);
       await updateDoc(userRef, dataToUpdate);
 
-      dispatch(updateEditedUser(formData));
+      dispatch(updateEditedUser({ ...formData, ...dataToUpdate }));
       setEditingMode(false);
+      setResumeFile(null);
     } catch (error) {
       console.error("❌ Error updating user info:", error.message);
     }
@@ -98,6 +132,33 @@ const AccountInformation = ({ user }) => {
     </div>
   );
 
+  const renderResumeSection = () => (
+    <div className="flex flex-col sm:flex-row sm:items-center mb-4">
+      <label className="font-medium w-36 text-gray-700">Resume:</label>
+      {editingMode ? (
+        <div className="flex flex-col gap-2">
+          <input
+            type="file"
+            accept=".pdf,.doc,.docx"
+            onChange={handleResumeUpload}
+            className="block"
+          />
+          {formData.resumeName && !resumeFile && (
+            <p className="text-sm text-gray-600">
+              Current File : <strong>{formData.resumeName}</strong>
+            </p>
+          )}
+        </div>
+      ) : formData.resumeName ? (
+        <p>
+          Uploaded : <strong>{formData.resumeName}</strong>
+        </p>
+      ) : (
+        <p className="text-gray-500 italic">No resume uploaded</p>
+      )}
+    </div>
+  );
+
   if (loading)
     return <div className="text-center mt-10">Loading profile...</div>;
 
@@ -116,6 +177,7 @@ const AccountInformation = ({ user }) => {
         {renderField("Bio", "bio")}
         {renderField("GitHub", "github")}
         {renderField("LinkedIn", "linkedin")}
+        {renderResumeSection()}
       </div>
 
       {editingMode ? (
@@ -124,7 +186,7 @@ const AccountInformation = ({ user }) => {
             onClick={handleSave}
             className="bg-green-600 hover:bg-green-700 transition text-white px-5 py-2 rounded-md"
           >
-            Save Changes
+            {uploading ? "Uploading..." : "Save Changes"}
           </button>
           <button
             onClick={handleCancel}
