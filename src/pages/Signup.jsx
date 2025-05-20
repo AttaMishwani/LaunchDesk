@@ -21,10 +21,9 @@ const Signup = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     setloading(true);
-
+    toast("Verification email sent. Please check your inbox.");
     try {
       const user = await signUp(email, password, userType);
-      toast("Verification email sent. Please check your inbox.");
 
       const checkInterval = setInterval(async () => {
         await user.reload();

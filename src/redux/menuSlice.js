@@ -10,9 +10,9 @@ const menuSlice = createSlice({
     name: "menu",
     initialState,
     reducers: {
-        toggleMenu: (state) => [
+        toggleMenu: (state) => {
             state.showMenu = !state.showMenu
-        ],
+        },
         closeMenu: (state) => {
             state.showMenu = false
         }

@@ -1,4 +1,8 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../src/firebase/firebase";
+
 import "./App.css";
 import AppLayout from "./ui/AppLayout";
 import Home from "./pages/Home";
@@ -10,19 +14,111 @@ import UserDetailsPage from "./pages/UserDetailsPage";
 import Profile from "./pages/Profile";
 import JobDetails from "./pages/JobDetails";
 
+function Loader() {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <p className="text-lg font-semibold animate-pulse">Loading...</p>
+    </div>
+  );
+}
+
 function App() {
+  const [user, setUser] = useState(null);
+  const [checkingAuth, setCheckingAuth] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setCheckingAuth(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const RequireAuth = ({ children }) => {
+    if (checkingAuth) return <Loader />;
+    if (!user || !user.emailVerified) return <Navigate to="/login" replace />;
+    return children;
+  };
+
+  const RedirectIfLoggedIn = ({ children }) => {
+    if (checkingAuth) return <Loader />;
+    if (user && user.emailVerified) return <Navigate to="/dashboard" replace />;
+    return children;
+  };
+
   return (
     <Routes>
       <Route path="/" element={<AppLayout />}>
-        <Route index element={<Home />} />
-        <Route path="home" element={<Home />} />
+        <Route
+          index
+          element={
+            <RequireAuth>
+              <Home />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="home"
+          element={
+            <RequireAuth>
+              <Home />
+            </RequireAuth>
+          }
+        />
+
         <Route path="about" element={<About />} />
-        <Route path="signup" element={<Signup />} />
-        <Route path="login" element={<Login />} />
-        <Route path="profile" element={<Profile />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="userdetailspage" element={<UserDetailsPage />} />
-        <Route path="jobs/:id" element={<JobDetails />} />
+
+        {/* Public routes */}
+        <Route
+          path="signup"
+          element={
+            <RedirectIfLoggedIn>
+              <Signup />
+            </RedirectIfLoggedIn>
+          }
+        />
+        <Route
+          path="login"
+          element={
+            <RedirectIfLoggedIn>
+              <Login />
+            </RedirectIfLoggedIn>
+          }
+        />
+
+        {/* Protected routes */}
+        <Route
+          path="dashboard"
+          element={
+            <RequireAuth>
+              <Dashboard />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="profile"
+          element={
+            <RequireAuth>
+              <Profile />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="userdetailspage"
+          element={
+            <RequireAuth>
+              <UserDetailsPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="jobs/:id"
+          element={
+            <RequireAuth>
+              <JobDetails />
+            </RequireAuth>
+          }
+        />
       </Route>
     </Routes>
   );

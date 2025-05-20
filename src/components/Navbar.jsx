@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { TbMenuDeep } from "react-icons/tb";
 import { logout, authStateListener } from "../firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleMenu } from "../redux/menuSlice";
+import { closeMenu, toggleMenu } from "../redux/menuSlice";
 
 const Navbar = () => {
   const { showMenu } = useSelector((state) => state.menu);
@@ -22,6 +22,10 @@ const Navbar = () => {
 
   const togglemenu = () => {
     dispatch(toggleMenu());
+  };
+
+  const handleCloseMenu = () => {
+    dispatch(closeMenu());
   };
 
   return (
@@ -63,12 +67,20 @@ const Navbar = () => {
           ) : (
             <>
               <li>
-                <NavLink to="/signup" className="hover:text-[#E11D48]">
+                <NavLink
+                  onClick={handleCloseMenu}
+                  to="/signup"
+                  className="block w-full text-center py-3 rounded-md text-white hover:bg-red-600 hover:text-white transition-colors duration-300"
+                >
                   Sign Up
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/login" className="hover:text-[#E11D48]">
+                <NavLink
+                  onClick={handleCloseMenu}
+                  to="/login"
+                  className="block w-full text-center py-3 rounded-md text-white hover:bg-red-600 hover:text-white transition-colors duration-300"
+                >
                   Login
                 </NavLink>
               </li>
