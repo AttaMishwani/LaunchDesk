@@ -18,6 +18,7 @@ const UserDetailsPage = () => {
     education: "",
     skills: "",
     confirmPassword: "",
+    confirmEmail: "",
     github: "",
     linkedin: "",
   });
@@ -48,6 +49,7 @@ const UserDetailsPage = () => {
         education: formData.education,
         skills: skillsArray,
         confirmPassword: formData.confirmPassword,
+        confirmEmail: formData.confirmEmail,
         github: formData.github,
         linkedin: formData.linkedin,
         type: currentUser.userType || "freelancer",
@@ -61,6 +63,7 @@ const UserDetailsPage = () => {
         education: formData.education,
         skills: skillsArray,
         confirmPassword: formData.confirmPassword,
+        confirmEmail: formData.confirmEmail,
         github: formData.github,
         linkedin: formData.linkedin,
         uid: currentUser.uid,
@@ -129,10 +132,17 @@ const UserDetailsPage = () => {
             />
           </div>
 
-          <textarea
+          <input
+            name="confirmEmail"
+            type="text"
+            placeholder="confirm Your Email"
+            onChange={handleChange}
+            className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"
+          />
+          <input
             name="confirmPassword"
-            placeholder="Short confirmPassword"
-            rows={3}
+            type="text"
+            placeholder="confirm Your Password"
             onChange={handleChange}
             className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"
           />

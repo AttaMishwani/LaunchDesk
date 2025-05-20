@@ -10,24 +10,32 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const handleLogin = async (e) => {
     e.preventDefault();
+    console.log("Login button clicked");
+
     try {
       toast.success("Logging in...");
       const user = await login(email, password);
+      console.log("User from login():", user);
 
-      if (user) {
-        console.log("User logged in:", user);
-        dispatch(
-          setUser({
-            uid: user.uid,
-            email: user.email,
-            displayName: user.displayName,
-          })
-        );
-        navigate("/dashboard");
+      if (!user.emailVerified) {
+        toast.error("Please verify your email before logging in.");
+        return;
       }
+
+      dispatch(
+        setUser({
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName || "User",
+        })
+      );
+
+      navigate("/home");
     } catch (error) {
+      console.error("Login error:", error.message);
       alert("Login failed: " + error.message);
     }
   };
