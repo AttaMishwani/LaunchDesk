@@ -9,16 +9,16 @@ import Popup from "../../ui/Popup";
 const PostAJob = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const [loading, setLoading] = useState(false);
-
   const [showPopUp, setshowPopUp] = useState(false);
-
   const [jobData, setjobData] = useState({
     title: "",
     description: "",
     location: "",
     company: "",
     salary: "",
+    questions: [""],
   });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setjobData((prevData) => ({ ...prevData, [name]: value }));
@@ -26,6 +26,12 @@ const PostAJob = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const { title, description, location, company, salary } = jobData;
+    if (!title || !description || !location || !company || !salary) {
+      alert("Please fill in all required fields before submitting.");
+      return;
+    }
 
     setLoading(true);
     try {
@@ -48,6 +54,7 @@ const PostAJob = () => {
         location: "",
         company: "",
         salary: "",
+        questions: [""],
       });
     } catch (error) {
       console.error("Error posting job:", error);
@@ -55,6 +62,21 @@ const PostAJob = () => {
 
     setLoading(false);
     setshowPopUp(true);
+  };
+
+  const handleQuestionChange = (index, value) => {
+    const updatedQuestions = [...jobData.questions];
+    updatedQuestions[index] = value;
+    setjobData((prev) => ({ ...prev, questions: updatedQuestions }));
+  };
+
+  const addQuestionField = () => {
+    if (jobData.questions.length < 5) {
+      setjobData((prev) => ({
+        ...prev,
+        questions: [...prev.questions, ""],
+      }));
+    }
   };
 
   return (
@@ -108,6 +130,29 @@ const PostAJob = () => {
               className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
 
+            <h2 className="text-lg font-semibold text-gray-700 mb-2">
+              Optional Screening Questions
+            </h2>
+            {jobData.questions.map((question, index) => (
+              <input
+                key={index}
+                type="text"
+                value={question}
+                onChange={(e) => handleQuestionChange(index, e.target.value)}
+                placeholder={`Question ${index + 1}`}
+                className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            ))}
+
+            {jobData.questions.length < 5 && (
+              <button
+                type="button"
+                onClick={addQuestionField}
+                className="text-blue-600 hover:underline text-sm"
+              >
+                + Add another question
+              </button>
+            )}
             <button
               type="submit"
               onClick={handleSubmit}

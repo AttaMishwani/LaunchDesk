@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import Loader from "../ui/Loader";
@@ -64,10 +64,16 @@ const JobDetails = () => {
             )}
           </div>
         )}
+
+        <NavLink to={`/screening-questions/${id}`}>
+          <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg shadow-md transition duration-200 mt-10  ">
+            Continue
+          </button>
+        </NavLink>
       </div>
 
       {/* Job Details Section */}
-      <div className="right w-full md:w-[60%] bg-white p-6 border-2 border-amber-400 rounded-lg">
+      <div className="right w-full md:w-[60%] bg-white p-6  rounded-lg">
         <h1 className="text-4xl font-bold text-blue-700 mb-4">{job.title}</h1>
         <p className="text-gray-700 mb-6">{job.description}</p>
         <p className="text-lg font-semibold text-green-700 mb-2">

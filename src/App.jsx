@@ -13,6 +13,7 @@ import Dashboard from "./pages/Dashboard";
 import UserDetailsPage from "./pages/UserDetailsPage";
 import Profile from "./pages/Profile";
 import JobDetails from "./pages/JobDetails";
+import ScreeningQuestions from "./pages/ScreeningQuestions";
 
 function Loader() {
   return (
@@ -116,6 +117,14 @@ function App() {
           element={
             <RequireAuth>
               <JobDetails />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="screening-questions/:id"
+          element={
+            <RequireAuth>
+              <ScreeningQuestions />
             </RequireAuth>
           }
         />

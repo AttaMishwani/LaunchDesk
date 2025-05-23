@@ -10,6 +10,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { setUser } from "../redux/userSlice";
 import { db } from "../firebase/firebase";
+import JobsPosted from "../components/Profile/JobsPosted";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -17,7 +18,12 @@ const Profile = () => {
   const currentUser = useSelector((state) => state.user.currentUser); // Use Redux state for currentUser
   const [selectedOption, setSelectedOption] = useState("Account Information");
 
-  const options = ["Account Information", "Post a Job", "Delete Account"];
+  const options = [
+    "Account Information",
+    "Post a Job",
+    "Delete Account",
+    "Jobs Posted",
+  ];
 
   const handleLogout = async () => {
     await logout();
@@ -63,6 +69,8 @@ const Profile = () => {
         return <PostAJob />;
       case "Delete Account":
         return <DeleteAccount />;
+      case "Jobs Posted":
+        return <JobsPosted />;
       default:
         return <AccountInformation user={currentUser} />;
     }
