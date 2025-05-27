@@ -1,0 +1,53 @@
+"filename", "language", "JavaScript JSX", "JavaScript", "PostCSS", "Markdown", "XML", "JSON", "HTML", "comment", "blank", "total"
+"f:\projectd\freelancer-box\README.md", "Markdown", 0, 0, 0, 1, 0, 0, 0, 0, 1, 2
+"f:\projectd\freelancer-box\cors.json", "JSON", 0, 0, 0, 0, 0, 8, 0, 0, 1, 9
+"f:\projectd\freelancer-box\eslint.config.js", "JavaScript", 0, 32, 0, 0, 0, 0, 0, 0, 2, 34
+"f:\projectd\freelancer-box\index.html", "HTML", 0, 0, 0, 0, 0, 0, 13, 0, 3, 16
+"f:\projectd\freelancer-box\package-lock.json", "JSON", 0, 0, 0, 0, 0, 4986, 0, 0, 1, 4987
+"f:\projectd\freelancer-box\package.json", "JSON", 0, 0, 0, 0, 0, 39, 0, 0, 1, 40
+"f:\projectd\freelancer-box\public\404.html", "HTML", 0, 0, 0, 0, 0, 0, 7, 0, 3, 10
+"f:\projectd\freelancer-box\public\index.html", "HTML", 0, 0, 0, 0, 0, 0, 79, 6, 5, 90
+"f:\projectd\freelancer-box\public\vite.svg", "XML", 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+"f:\projectd\freelancer-box\src\App.css", "PostCSS", 0, 0, 28, 0, 0, 0, 0, 0, 9, 37
+"f:\projectd\freelancer-box\src\App.jsx", "JavaScript JSX", 123, 0, 0, 0, 0, 0, 0, 2, 12, 137
+"f:\projectd\freelancer-box\src\Posts\addPost.js", "JavaScript", 0, 15, 0, 0, 0, 0, 0, 2, 6, 23
+"f:\projectd\freelancer-box\src\api\fetchJobById.js", "JavaScript", 0, 8, 0, 0, 0, 0, 0, 1, 4, 13
+"f:\projectd\freelancer-box\src\api\fetchPosts.js", "JavaScript", 0, 15, 0, 0, 0, 0, 0, 0, 3, 18
+"f:\projectd\freelancer-box\src\components\Footer.jsx", "JavaScript JSX", 78, 0, 0, 0, 0, 0, 0, 4, 6, 88
+"f:\projectd\freelancer-box\src\components\JobCard.jsx", "JavaScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"f:\projectd\freelancer-box\src\components\Navbar.jsx", "JavaScript JSX", 85, 0, 0, 0, 0, 0, 0, 0, 11, 96
+"f:\projectd\freelancer-box\src\components\PrivateRoute.jsx", "JavaScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"f:\projectd\freelancer-box\src\components\Profile\AccountInformation.jsx", "JavaScript JSX", 191, 0, 0, 0, 0, 0, 0, 0, 22, 213
+"f:\projectd\freelancer-box\src\components\Profile\DeleteAccount.jsx", "JavaScript JSX", 5, 0, 0, 0, 0, 0, 0, 0, 3, 8
+"f:\projectd\freelancer-box\src\components\Profile\JobsPosted.jsx", "JavaScript JSX", 105, 0, 0, 0, 0, 0, 0, 0, 12, 117
+"f:\projectd\freelancer-box\src\components\Profile\PostAJob.jsx", "JavaScript JSX", 156, 0, 0, 0, 0, 0, 0, 0, 15, 171
+"f:\projectd\freelancer-box\src\firebase\Storage.js", "JavaScript", 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"f:\projectd\freelancer-box\src\firebase\auth.js", "JavaScript", 0, 44, 0, 0, 0, 0, 0, 6, 8, 58
+"f:\projectd\freelancer-box\src\firebase\firebase.js", "JavaScript", 0, 18, 0, 0, 0, 0, 0, 5, 5, 28
+"f:\projectd\freelancer-box\src\firebase\firestore.js", "JavaScript", 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"f:\projectd\freelancer-box\src\index.css", "PostCSS", 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"f:\projectd\freelancer-box\src\main.jsx", "JavaScript JSX", 22, 0, 0, 0, 0, 0, 0, 0, 3, 25
+"f:\projectd\freelancer-box\src\pages\About.jsx", "JavaScript JSX", 5, 0, 0, 0, 0, 0, 0, 0, 3, 8
+"f:\projectd\freelancer-box\src\pages\Applications.jsx", "JavaScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"f:\projectd\freelancer-box\src\pages\Dashboard.jsx", "JavaScript JSX", 41, 0, 0, 0, 0, 0, 0, 7, 7, 55
+"f:\projectd\freelancer-box\src\pages\Home.jsx", "JavaScript JSX", 75, 0, 0, 0, 0, 0, 0, 2, 10, 87
+"f:\projectd\freelancer-box\src\pages\JobDetails.jsx", "JavaScript JSX", 82, 0, 0, 0, 0, 0, 0, 2, 10, 94
+"f:\projectd\freelancer-box\src\pages\Login.jsx", "JavaScript JSX", 97, 0, 0, 0, 0, 0, 0, 0, 13, 110
+"f:\projectd\freelancer-box\src\pages\PostJob.jsx", "JavaScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"f:\projectd\freelancer-box\src\pages\Profile.jsx", "JavaScript JSX", 100, 0, 0, 0, 0, 0, 0, 3, 11, 114
+"f:\projectd\freelancer-box\src\pages\ScreeningQuestions.jsx", "JavaScript JSX", 21, 0, 0, 0, 0, 0, 0, 0, 4, 25
+"f:\projectd\freelancer-box\src\pages\Signup.jsx", "JavaScript JSX", 128, 0, 0, 0, 0, 0, 0, 1, 13, 142
+"f:\projectd\freelancer-box\src\pages\UserDetailsPage.jsx", "JavaScript JSX", 145, 0, 0, 0, 0, 0, 0, 1, 17, 163
+"f:\projectd\freelancer-box\src\redux\authSlice.js", "JavaScript", 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"f:\projectd\freelancer-box\src\redux\jobsSlice.js", "JavaScript", 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"f:\projectd\freelancer-box\src\redux\menuSlice.js", "JavaScript", 0, 18, 0, 0, 0, 0, 0, 2, 3, 23
+"f:\projectd\freelancer-box\src\redux\store.js", "JavaScript", 0, 34, 0, 0, 0, 0, 0, 1, 6, 41
+"f:\projectd\freelancer-box\src\redux\userSlice.js", "JavaScript", 0, 23, 0, 0, 0, 0, 0, 1, 5, 29
+"f:\projectd\freelancer-box\src\routes\AppRouter.jsx", "JavaScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"f:\projectd\freelancer-box\src\ui\AppLayout.jsx", "JavaScript JSX", 14, 0, 0, 0, 0, 0, 0, 0, 3, 17
+"f:\projectd\freelancer-box\src\ui\Button.jsx", "JavaScript JSX", 9, 0, 0, 0, 0, 0, 0, 0, 3, 12
+"f:\projectd\freelancer-box\src\ui\Loader.jsx", "JavaScript JSX", 10, 0, 0, 0, 0, 0, 0, 0, 3, 13
+"f:\projectd\freelancer-box\src\ui\Popup.jsx", "JavaScript JSX", 36, 0, 0, 0, 0, 0, 0, 3, 6, 45
+"f:\projectd\freelancer-box\src\ui\css\loader.css", "PostCSS", 0, 0, 20, 0, 0, 0, 0, 1, 1, 22
+"f:\projectd\freelancer-box\vite.config.js", "JavaScript", 0, 7, 0, 0, 0, 0, 0, 1, 2, 10
+"Total", "-", 1528, 214, 48, 1, 1, 5033, 99, 51, 266, 7241

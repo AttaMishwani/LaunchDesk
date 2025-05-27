@@ -49,7 +49,6 @@ const JobsPosted = () => {
       await deleteDoc(doc(db, "posts", jobId));
       setJobs((prevJobs) => prevJobs.filter((job) => job.id !== jobId));
       console.log(`🗑️ Job with ID ${jobId} deleted.`);
-      setDeleteState(false);
     } catch (error) {
       console.error("❌ Error deleting job:", error);
     } finally {

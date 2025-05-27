@@ -1,14 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import Loader from "../ui/Loader";
 import { fetchJobById } from "../api/fetchJobById";
+import { useDispatch } from "react-redux";
+import {
+  setJobId,
+  setResumeURL,
+  setUserInfo,
+} from "../redux/jobApplicationSlice";
+import { auth } from "../firebase/firebase";
 
 const JobDetails = () => {
   const { id } = useParams();
   const [resumeFile, setResumeFile] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const [resumePreviewUrl, setResumePreviewUrl] = useState(null);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const currentUser = auth.currentUser;
+    setCurrentUser(currentUser);
+  }, []);
+
+  if (currentUser) {
+    dispatch(
+      setUserInfo({
+        email: currentUser.email,
+        displayName: currentUser.displayName,
+        emailVerified: currentUser.emailVerified,
+        uid: currentUser.uid,
+      })
+    );
+  }
 
   const {
     data: job,
@@ -20,11 +45,19 @@ const JobDetails = () => {
     enabled: !!id,
   });
 
+  useEffect(() => {
+    dispatch(setJobId(id));
+  }, [job, id, dispatch]);
+
   const handleResumeUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      const previewURl = URL.createObjectURL(file);
       setResumeFile(file);
-      setResumePreviewUrl(URL.createObjectURL(file));
+
+      setResumePreviewUrl(previewURl);
+
+      dispatch(setResumeURL(previewURl));
     }
   };
 

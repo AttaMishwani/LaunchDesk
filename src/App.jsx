@@ -14,6 +14,8 @@ import UserDetailsPage from "./pages/UserDetailsPage";
 import Profile from "./pages/Profile";
 import JobDetails from "./pages/JobDetails";
 import ScreeningQuestions from "./pages/ScreeningQuestions";
+import Review from "./pages/Review";
+import ThankYou from "./pages/ThankYou";
 
 function Loader() {
   return (
@@ -125,6 +127,22 @@ function App() {
           element={
             <RequireAuth>
               <ScreeningQuestions />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/review"
+          element={
+            <RequireAuth>
+              <Review />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/thank-you"
+          element={
+            <RequireAuth>
+              <ThankYou />
             </RequireAuth>
           }
         />

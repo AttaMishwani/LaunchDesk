@@ -2,6 +2,7 @@
 import { configureStore, current } from "@reduxjs/toolkit";
 import userReducer from "./userSlice";
 import menuReducer from "./menuSlice";
+import jobApplicationReducer from './jobApplicationSlice';
 
 
 const loadFromLocalStorage = () => {
@@ -28,7 +29,8 @@ const saveToLocalStorage = (state) => {
 const store = configureStore({
     reducer: {
         user: userReducer,
-        menu: menuReducer
+        menu: menuReducer,
+        jobApplication: jobApplicationReducer,
     },
     preloadedState: loadFromLocalStorage(),
 });
