@@ -30,7 +30,15 @@ const Signup = () => {
 
         if (user.emailVerified) {
           clearInterval(checkInterval);
-          dispatch(setUser({ ...user, emailVerified: true }));
+          dispatch(
+            setUser({
+              uid: user.uid,
+              email: user.email,
+              emailVerified: true,
+              userType, // ✅ add userType here
+            })
+          );
+
           setloading(false);
           navigate("/userdetailspage");
         }

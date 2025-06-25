@@ -43,8 +43,7 @@ const Home = () => {
                 </h3>
                 <p className="text-gray-700 mb-4">{post.description}</p>
                 <div className="flex justify-between items-center">
-                  <p className="font-bold text-green-600">${post.salary}</p>
-                  <FaStar className="text-yellow-400" />
+                  <p className="font-bold text-green-600">{post.salary}</p>
                 </div>
               </div>
             ))}
@@ -71,7 +70,7 @@ const Home = () => {
                   Location: {selectedPost.location}
                 </p>
 
-                <Link to={`jobs/${selectedPost.id}`}>
+                <Link to={`/jobs/${selectedPost.id}`}>
                   <Button buttonText="Apply Now" />
                 </Link>
               </div>

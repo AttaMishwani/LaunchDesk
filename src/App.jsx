@@ -16,6 +16,7 @@ import JobDetails from "./pages/JobDetails";
 import ScreeningQuestions from "./pages/ScreeningQuestions";
 import Review from "./pages/Review";
 import ThankYou from "./pages/ThankYou";
+import ViewJobApplicants from "./pages/ViewJobApplicants";
 
 function Loader() {
   return (
@@ -45,7 +46,7 @@ function App() {
 
   const RedirectIfLoggedIn = ({ children }) => {
     if (checkingAuth) return <Loader />;
-    if (user && user.emailVerified) return <Navigate to="/dashboard" replace />;
+    if (user && user.emailVerified) return <Navigate to="/home" replace />;
     return children;
   };
 
@@ -131,7 +132,7 @@ function App() {
           }
         />
         <Route
-          path="/review"
+          path="review"
           element={
             <RequireAuth>
               <Review />
@@ -143,6 +144,15 @@ function App() {
           element={
             <RequireAuth>
               <ThankYou />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="view-job-applicants/:jobId"
+          element={
+            <RequireAuth>
+              <ViewJobApplicants />
             </RequireAuth>
           }
         />

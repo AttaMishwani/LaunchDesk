@@ -9,6 +9,7 @@ import {
   where,
 } from "firebase/firestore";
 import Loader from "../../ui/Loader";
+import { NavLink } from "react-router-dom";
 
 const JobsPosted = () => {
   const [jobs, setJobs] = useState(null);
@@ -28,7 +29,6 @@ const JobsPosted = () => {
         }));
 
         setJobs(jobsData);
-        console.log("✅ All jobs set to state:", jobsData);
       } catch (error) {
         console.error("❌ Error fetching jobs:", error);
       }
@@ -56,10 +56,6 @@ const JobsPosted = () => {
     }
   };
 
-  const handleViewApplications = (jobId) => {
-    alert(`🔍 View applications for job ID: ${jobId}`);
-  };
-
   return (
     <div className="p-4">
       {!jobs ? (
@@ -82,12 +78,12 @@ const JobsPosted = () => {
                   <td className="px-4 py-2 border">{job.title}</td>
                   <td className="px-4 py-2 border">{job.company}</td>
                   <td className="px-4 py-2 border space-x-2">
-                    <button
-                      onClick={() => handleViewApplications(job.id)}
-                      className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded"
-                    >
-                      View Applications
-                    </button>
+                    <NavLink to={`/view-job-applicants/${job.id}`}>
+                      <button className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded">
+                        View Applications
+                      </button>
+                    </NavLink>
+
                     <button
                       onClick={() => handleDelete(job.id)}
                       className="bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1 rounded"

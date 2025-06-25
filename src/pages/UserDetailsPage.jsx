@@ -2,13 +2,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { doc, setDoc } from "firebase/firestore";
-import { db } from "../firebase/firebase";
+import { auth, db } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
 import { setUser } from "../redux/userSlice";
+import { getAuth, updateProfile } from "firebase/auth";
 
 const UserDetailsPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const firebaseUser = auth.currentUser;
 
   const currentUser = useSelector((state) => state.user.currentUser);
 
@@ -41,19 +43,25 @@ const UserDetailsPage = () => {
       const skillsArray = formData.skills
         .split(",")
         .map((skill) => skill.trim());
-
-      await setDoc(userRef, {
-        username: formData.username,
-        email: currentUser.email,
-        phone: formData.phone,
-        education: formData.education,
-        skills: skillsArray,
-        confirmPassword: formData.confirmPassword,
-        confirmEmail: formData.confirmEmail,
-        github: formData.github,
-        linkedin: formData.linkedin,
-        type: currentUser.userType || "freelancer",
-        uid: currentUser.uid,
+      await setDoc(
+        userRef,
+        {
+          username: formData.username,
+          email: currentUser.email,
+          phone: formData.phone,
+          education: formData.education,
+          skills: skillsArray,
+          confirmPassword: formData.confirmPassword,
+          confirmEmail: formData.confirmEmail,
+          github: formData.github,
+          linkedin: formData.linkedin,
+          // type: currentUser.userType,
+          uid: currentUser.uid,
+        },
+        { merge: true }
+      ); // ✅ merge true
+      await updateProfile(firebaseUser, {
+        displayName: formData.username,
       });
 
       const updatedUserToRedux = {
@@ -75,7 +83,8 @@ const UserDetailsPage = () => {
 
       navigate("/home");
     } catch (err) {
-      alert("Something went wrong while saving profile!");
+      console.error("🔥 Firestore error:", err);
+      alert("❌ Something went wrong while saving profile: " + err.message);
     }
   };
 

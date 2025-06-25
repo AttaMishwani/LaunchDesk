@@ -1,18 +1,21 @@
-import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fetchJobById } from "../api/fetchJobById";
-import { addDoc, collection } from "firebase/firestore";
+import { useQuery } from "@tanstack/react-query";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+
 import Loader from "../ui/Loader";
 import { auth, db } from "../firebase/firebase";
+import { fetchJobById } from "../api/fetchJobById";
+import { resetApplication } from "../redux/jobApplicationSlice";
 
 const Review = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const jobApplication = useSelector((state) => state.jobApplication || {});
+  const { resumeURL, answers = [], jobId } = jobApplication;
   const currentUser = auth.currentUser;
-  const [loadingState, setloadingState] = useState(false);
-  const { resumeURL, answers, jobId } = jobApplication;
+  const [loading, setLoading] = useState(false);
 
   const {
     data: jobDetails,
@@ -30,30 +33,33 @@ const Review = () => {
       return;
     }
 
-    setloadingState(true); // ✅ Show loader
+    // if (!resumeURL) {
+    //   alert("Please upload your resume before submitting.");
+    //   return;
+    // }
+
+    setLoading(true);
 
     try {
       await addDoc(collection(db, "applications"), {
         ...jobApplication,
-        userId: currentUser.uid,
+        applicantId: currentUser.uid,
+        ownerId: jobDetails?.ownerId || "",
+        createdAt: serverTimestamp(),
       });
 
       alert("Application Submitted Successfully!");
+      dispatch(resetApplication());
       navigate("/thank-you");
-    } catch (error) {
-      console.error("Error submitting application:", error);
+    } catch (err) {
+      console.error("Error submitting application:", err);
       alert("Failed to submit application. Please try again later.");
     } finally {
-      setloadingState(false); // ✅ Hide loader when done
+      setLoading(false);
     }
   };
 
-  if (isLoading)
-    return (
-      <div className="text-center py-10 text-blue-600 font-semibold">
-        Loading job details...
-      </div>
-    );
+  if (isLoading) return <Loader />;
 
   if (error)
     return (
@@ -64,7 +70,7 @@ const Review = () => {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
-      {loadingState ? (
+      {loading ? (
         <Loader />
       ) : (
         <div className="flex flex-col">
@@ -78,27 +84,30 @@ const Review = () => {
               {jobDetails?.title || "Job Title"}
             </h2>
             <p className="text-gray-700 mb-1">
-              <strong>Company:</strong> {jobDetails?.company}
+              <strong>Company:</strong> {jobDetails?.company || "N/A"}
             </p>
             <p className="text-gray-700 mb-1">
-              <strong>Location:</strong> {jobDetails?.location}
+              <strong>Location:</strong> {jobDetails?.location || "N/A"}
             </p>
             <p className="text-gray-700 mb-1">
-              <strong>Salary:</strong> ${jobDetails?.salary}
+              <strong>Salary:</strong> ${jobDetails?.salary || "N/A"}
             </p>
-            <p className="text-gray-700 mt-2">{jobDetails?.description}</p>
+            <p className="text-gray-700 mt-2">
+              {jobDetails?.description || "No description available."}
+            </p>
           </div>
 
-          {/* Resume Preview */}
           <div className="bg-white p-6 rounded-lg shadow mb-8 border border-blue-100">
             <h2 className="text-2xl font-semibold text-blue-600 mb-4">
               Resume Preview
             </h2>
+
             {resumeURL ? (
               <iframe
                 src={resumeURL}
                 title="Resume Preview"
-                className="w-full h-[400px] border"
+                className="w-full h-[500px] border rounded"
+                allowFullScreen
               />
             ) : (
               <p className="text-red-500">No resume uploaded.</p>
@@ -110,11 +119,13 @@ const Review = () => {
             <h2 className="text-2xl font-semibold text-blue-600 mb-4">
               Screening Answers
             </h2>
-            {answers && answers.length > 0 ? (
+            {answers.length > 0 ? (
               answers.map((ans, index) => (
                 <div key={index} className="mb-4">
                   <p className="font-semibold">Q{index + 1}:</p>
-                  <p className="text-gray-700">Ans: {ans}</p>
+                  <p className="text-gray-700">
+                    Ans: {ans || "No answer provided."}
+                  </p>
                 </div>
               ))
             ) : (

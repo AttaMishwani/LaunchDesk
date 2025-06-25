@@ -11,19 +11,29 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { setUser } from "../redux/userSlice";
 import { db } from "../firebase/firebase";
 import JobsPosted from "../components/Profile/JobsPosted";
+import JobsApplied from "../components/Profile/JobsApplied";
 
 const Profile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.user.currentUser); // Use Redux state for currentUser
+  const currentUser = useSelector((state) => state.user.currentUser);
+
   const [selectedOption, setSelectedOption] = useState("Account Information");
 
-  const options = [
-    "Account Information",
-    "Post a Job",
-    "Delete Account",
-    "Jobs Posted",
-  ];
+  const getOptionsByRole = (role) => {
+    if (role === "freelancer") {
+      return ["Account Information", "Delete Account", "Jobs Applied"];
+    } else if (role == "client") {
+      return [
+        "Account Information",
+        "Post a Job",
+        "Delete Account",
+        "Jobs Posted",
+      ];
+    } else {
+      return ["Account Information"];
+    }
+  };
 
   const handleLogout = async () => {
     await logout();
@@ -71,11 +81,15 @@ const Profile = () => {
         return <DeleteAccount />;
       case "Jobs Posted":
         return <JobsPosted />;
+      case "Jobs Applied":
+        return <JobsApplied />;
       default:
         return <AccountInformation user={currentUser} />;
     }
   };
 
+  const userRole = currentUser.type;
+  const options = getOptionsByRole(userRole);
   return (
     <div className="w-full">
       <div className="profile-content py-10 flex w-full max-w-[1300px] mx-auto">
