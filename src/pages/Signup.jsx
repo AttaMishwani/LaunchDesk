@@ -1,51 +1,93 @@
-// components/Signup.js
-import { useState } from "react";
+// Updated Signup.js (with user details form combined)
+import { useState, useEffect } from "react";
 import { signUp } from "../firebase/auth";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/userSlice";
 import Loader from "../ui/Loader";
 import { toast } from "react-toastify";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase/firebase";
+import { getAuth, onAuthStateChanged, updateProfile } from "firebase/auth";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [loading, setloading] = useState(false);
-
-  const [userType, setUserType] = useState("");
+  const [type, setType] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [username, setUsername] = useState("");
+  const [phone, setPhone] = useState("");
+  const [skills, setSkills] = useState("");
+  const [github, setGithub] = useState("");
+  const [linkedin, setLinkedin] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // Check if already signed in and verified
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user && user.emailVerified) {
+        navigate("/home");
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
   const handleSignUp = async (e) => {
     e.preventDefault();
-    setloading(true);
-    toast("Verification email sent. Please check your inbox.");
+    setLoading(true);
+
     try {
-      const user = await signUp(email, password, userType);
+      const user = await signUp(email, password, type);
+      toast("Verification email sent. Please check your inbox.");
 
       const checkInterval = setInterval(async () => {
         await user.reload();
 
         if (user.emailVerified) {
           clearInterval(checkInterval);
+
+          await updateProfile(user, {
+            displayName: username,
+          });
+
+          const skillsArray = skills.split(",").map((s) => s.trim());
+
+          await setDoc(doc(db, "users", user.uid), {
+            uid: user.uid,
+            email: user.email,
+            type,
+            username,
+            phone,
+            skills: skillsArray,
+            github,
+            linkedin,
+            createdAt: new Date().toISOString(),
+          });
+
           dispatch(
             setUser({
               uid: user.uid,
               email: user.email,
               emailVerified: true,
-              userType, // ✅ add userType here
+              type,
+              username,
+              phone,
+              skills: skillsArray,
+              github,
+              linkedin,
             })
           );
 
-          setloading(false);
-          navigate("/userdetailspage");
+          navigate("/home");
         }
       }, 3000);
     } catch (error) {
       console.error("❌ Signup error:", error);
       alert("Signup failed: " + error.message);
+      setLoading(false);
     }
   };
 
@@ -58,85 +100,34 @@ const Signup = () => {
           <h2 className="text-3xl font-semibold text-center text-[#4F46E5] mb-6">
             Create Account
           </h2>
-          <form onSubmit={handleSignUp} className="space-y-5">
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-gray-700 font-medium mb-1"
-              >
-                Email
+          <form onSubmit={handleSignUp} className="space-y-4">
+            <input type="text" placeholder="Username *" required value={username} onChange={(e) => setUsername(e.target.value)} className="input" />
+            <input type="email" placeholder="Email *" required value={email} onChange={(e) => setEmail(e.target.value)} className="input" />
+            <input type="password" placeholder="Password *" required value={password} onChange={(e) => setPassword(e.target.value)} className="input" />
+            <input type="text" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} className="input" />
+            <input type="text" placeholder="Skills (comma separated)" value={skills} onChange={(e) => setSkills(e.target.value)} className="input" />
+            <input type="url" placeholder="GitHub Profile" value={github} onChange={(e) => setGithub(e.target.value)} className="input" />
+            <input type="url" placeholder="LinkedIn Profile" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} className="input" />
+
+            <div className="flex space-x-6">
+              <label className="flex items-center">
+                <input type="radio" value="JobSeeker" checked={type === "JobSeeker"} onChange={(e) => setType(e.target.value)} className="mr-2" />
+                JobSeeker
               </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                placeholder="Enter your email"
-                className="w-full px-4 py-2 border rounded-md"
-              />
+              <label className="flex items-center">
+                <input type="radio" value="Recruiter" checked={type === "Recruiter"} onChange={(e) => setType(e.target.value)} className="mr-2" />
+                Recruiter
+              </label>
             </div>
 
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-gray-700 font-medium mb-1"
-              >
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                placeholder="Enter your password"
-                className="w-full px-4 py-2 border rounded-md"
-              />
-            </div>
-
-            <div>
-              <label className="block text-gray-700 font-medium mb-1">
-                Are you a Freelancer or a Client?
-              </label>
-              <div className="flex space-x-6">
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    value="freelancer"
-                    checked={userType === "freelancer"}
-                    onChange={(e) => setUserType(e.target.value)}
-                    className="mr-2"
-                  />{" "}
-                  Freelancer
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    value="client"
-                    checked={userType === "client"}
-                    onChange={(e) => setUserType(e.target.value)}
-                    className="mr-2"
-                  />{" "}
-                  Client
-                </label>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-[#E11D48] hover:bg-[#c9153e] text-white py-2 rounded-md font-medium transition-all"
-            >
+            <button type="submit" className="w-full bg-[#E11D48] hover:bg-[#c9153e] text-white py-2 rounded-md font-medium transition-all">
               Sign Up
             </button>
           </form>
 
           <p className="mt-6 text-sm text-center text-gray-600">
-            Already have an account?{" "}
-            <NavLink
-              to="/login"
-              className="text-[#4F46E5] font-medium hover:underline"
-            >
+            Already have an account?{' '}
+            <NavLink to="/login" className="text-[#4F46E5] font-medium hover:underline">
               Login
             </NavLink>
           </p>

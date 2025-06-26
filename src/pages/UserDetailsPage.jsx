@@ -111,13 +111,7 @@ const UserDetailsPage = () => {
               onChange={handleChange}
               className="input"
             />
-            <input
-              name="education"
-              type="text"
-              placeholder="Education"
-              onChange={handleChange}
-              className="input"
-            />
+          
             <input
               name="skills"
               type="text"
@@ -141,20 +135,8 @@ const UserDetailsPage = () => {
             />
           </div>
 
-          <input
-            name="confirmEmail"
-            type="text"
-            placeholder="confirm Your Email"
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"
-          />
-          <input
-            name="confirmPassword"
-            type="text"
-            placeholder="confirm Your Password"
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"
-          />
+         
+         
 
           <button
             type="submit"

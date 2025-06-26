@@ -23,7 +23,7 @@ const Profile = () => {
   const getOptionsByRole = (role) => {
     if (role === "freelancer") {
       return ["Account Information", "Delete Account", "Jobs Applied"];
-    } else if (role == "client") {
+    } else if (role === "client") {
       return [
         "Account Information",
         "Post a Job",
@@ -41,37 +41,14 @@ const Profile = () => {
     navigate("/login");
   };
 
-  useEffect(() => {
-    const auth = getAuth();
-    // Subscribe to auth state changes
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        try {
-          const docRef = doc(db, "users", user.uid);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            const data = docSnap.data();
-            dispatch(setUser(data)); // Set Redux state directly
-          } else {
-            console.warn("No user document found!");
-          }
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-        }
-      } else {
-        // User signed out
-        dispatch(setUser(null));
-      }
-    });
+  if (!currentUser) {
+    return <div>Loading profile…</div>;
+  }
 
-    // Cleanup subscription on unmount
-    return () => unsubscribe();
-  }, [dispatch]);
+  const userRole = currentUser.type || currentUser.userType;
+  const options = getOptionsByRole(userRole);
 
   const renderContent = () => {
-    if (!currentUser) {
-      return <div>Loading profile…</div>; // Show loading message if currentUser is null
-    }
     switch (selectedOption) {
       case "Account Information":
         return <AccountInformation user={currentUser} />;
@@ -88,8 +65,6 @@ const Profile = () => {
     }
   };
 
-  const userRole = currentUser.type;
-  const options = getOptionsByRole(userRole);
   return (
     <div className="w-full">
       <div className="profile-content py-10 flex w-full max-w-[1300px] mx-auto">

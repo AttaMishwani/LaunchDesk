@@ -1,3 +1,4 @@
+// firebase/auth.js
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
@@ -9,19 +10,17 @@ import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "./firebase";
 
 // ✅ Sign Up
-export const signUp = async (email, password, userType) => {
+export const signUp = async (email, password, type) => {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // send email verification
-        await sendEmailVerification(user)
+        await sendEmailVerification(user);
 
-        // Store user info in Firestore
         await setDoc(doc(db, "users", user.uid), {
             email: user.email,
-            userType,
-            createdAt: serverTimestamp(), // More accurate than new Date()
+            type,
+            createdAt: serverTimestamp(),
         });
 
         return user;
@@ -49,7 +48,7 @@ export const logout = async () => {
     }
 };
 
-// ✅ Auth Listener (delayed safe fetch trigger)
+// ✅ Auth Listener
 export const authStateListener = (callback) => {
     return onAuthStateChanged(auth, (user) => {
         callback(user);

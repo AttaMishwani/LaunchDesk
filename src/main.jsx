@@ -14,7 +14,7 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
-        <BrowserRouter basename="/freelancerbox">
+        <BrowserRouter basename={import.meta.env.MODE === 'production' ? '/freelancerbox' : '/'}>
           <App />
           <ToastContainer />
         </BrowserRouter>
