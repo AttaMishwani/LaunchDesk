@@ -29,7 +29,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="w-full py-4 bg-[#4F46E5] text-white px-6 shadow-md">
+    <header className="w-full py-4 bg-red-600 text-white px-6 shadow-md">
       <nav className="max-w-[1300px] mx-auto flex items-center justify-between">
         <div className="logo">
           <NavLink to="/">
