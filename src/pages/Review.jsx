@@ -13,7 +13,7 @@ const Review = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const jobApplication = useSelector((state) => state.jobApplication || {});
-  const { resumeURL, answers = [], jobId } = jobApplication;
+  const { resumeURL, QA = [], jobId } = jobApplication;
   const currentUser = auth.currentUser;
   const [loading, setLoading] = useState(false);
 
@@ -32,11 +32,6 @@ const Review = () => {
       alert("You must be logged in to submit an application.");
       return;
     }
-
-    // if (!resumeURL) {
-    //   alert("Please upload your resume before submitting.");
-    //   return;
-    // }
 
     setLoading(true);
 
@@ -97,6 +92,7 @@ const Review = () => {
             </p>
           </div>
 
+          {/* Resume */}
           <div className="bg-white p-6 rounded-lg shadow mb-8 border border-blue-100">
             <h2 className="text-2xl font-semibold text-blue-600 mb-4">
               Resume Preview
@@ -114,17 +110,20 @@ const Review = () => {
             )}
           </div>
 
-          {/* Screening Questions */}
+          {/* QA Answers */}
           <div className="bg-white p-6 rounded-lg shadow mb-8 border border-blue-100">
             <h2 className="text-2xl font-semibold text-blue-600 mb-4">
               Screening Answers
             </h2>
-            {answers.length > 0 ? (
-              answers.map((ans, index) => (
+            {QA.length > 0 ? (
+              QA.map((qa, index) => (
                 <div key={index} className="mb-4">
-                  <p className="font-semibold">Q{index + 1}:</p>
-                  <p className="text-gray-700">
-                    Ans: {ans || "No answer provided."}
+                  <p className="font-semibold text-gray-800">
+                    Q{index + 1}: {qa.question}
+                  </p>
+                  <p className="text-gray-700 mt-1">
+                    <strong>Answer:</strong>{" "}
+                    {qa.answer || "No answer provided."}
                   </p>
                 </div>
               ))

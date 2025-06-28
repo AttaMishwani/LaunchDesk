@@ -9,6 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { db } from "../../firebase/firebase";
+import Loader from "../../ui/Loader";
 
 const JobsApplied = () => {
   const [applications, setApplications] = useState([]);
@@ -18,6 +19,7 @@ const JobsApplied = () => {
   useEffect(() => {
     const fetchApplications = async () => {
       if (!currentUser) return;
+      setLoading(true);
 
       try {
         const q = query(
@@ -53,7 +55,10 @@ const JobsApplied = () => {
   return (
     <div className="space-y-6">
       <h2 className="text-3xl font-bold text-blue-700 mb-6">Jobs Applied</h2>
-      {applications.length === 0 ? (
+
+      {loading ? (
+        <Loader />
+      ) : applications.length === 0 ? (
         <p className="text-gray-500">You haven't applied to any jobs yet.</p>
       ) : (
         applications.map((app) => (

@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { fetchJobById } from "../api/fetchJobById";
 import { useParams, useNavigate } from "react-router-dom";
 import Loader from "../ui/Loader";
-import { auth, db } from "../firebase/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { auth } from "../firebase/firebase";
 import { useDispatch } from "react-redux";
 import { setAnswers } from "../redux/jobApplicationSlice";
 
@@ -12,7 +11,6 @@ const ScreeningQuestions = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const user = auth.currentUser;
 
   const {
@@ -42,8 +40,12 @@ const ScreeningQuestions = () => {
       return;
     }
 
-    dispatch(setAnswers(answers));
+    const QA = questions.map((question, index) => ({
+      question,
+      answer: answers[index],
+    }));
 
+    dispatch(setAnswers({ QA, jobId: id }));
     navigate("/review");
   };
 
@@ -63,39 +65,35 @@ const ScreeningQuestions = () => {
 
         {isLoading ? (
           <Loader />
-        ) : (
-          <>
-            {questions.length > 0 ? (
-              <form className="space-y-6" onSubmit={handleSubmit}>
-                {questions.map((question, index) => (
-                  <div key={index}>
-                    <label className="block text-gray-800 font-medium mb-2">
-                      {index + 1}. {question}
-                    </label>
-                    <textarea
-                      rows="3"
-                      placeholder="Type your answer..."
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                      value={answers[index]}
-                      onChange={(e) => handleChange(index, e.target.value)}
-                      required
-                    ></textarea>
-                  </div>
-                ))}
+        ) : questions.length > 0 ? (
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            {questions.map((question, index) => (
+              <div key={index}>
+                <label className="block text-gray-800 font-medium mb-2">
+                  {index + 1}. {question}
+                </label>
+                <textarea
+                  rows="3"
+                  placeholder="Type your answer..."
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                  value={answers[index]}
+                  onChange={(e) => handleChange(index, e.target.value)}
+                  required
+                ></textarea>
+              </div>
+            ))}
 
-                <button
-                  type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-md shadow-md transition duration-300"
-                >
-                  Next Step
-                </button>
-              </form>
-            ) : (
-              <p className="text-gray-600 text-center">
-                No questions provided by the employer.
-              </p>
-            )}
-          </>
+            <button
+              type="submit"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-md shadow-md transition duration-300"
+            >
+              Next Step
+            </button>
+          </form>
+        ) : (
+          <p className="text-gray-600 text-center">
+            No questions provided by the employer.
+          </p>
         )}
       </div>
     </div>

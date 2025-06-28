@@ -19,8 +19,6 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log("Login button clicked");
-    console.log("Email:", email, "Password:", password);
 
     try {
       const user = await login(email, password);
@@ -46,7 +44,6 @@ const Login = () => {
       }
 
       toast.success("Login successful!");
-
       navigate("/home");
     } catch (error) {
       console.error("Login error:", error);
@@ -57,44 +54,54 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
+    <div className="flex items-center justify-center min-h-screen  px-4">
       {loading ? (
         <Loader />
       ) : (
-        <div className="bg-white shadow-lg rounded-xl w-full max-w-md p-8 border-2 border-blue-600">
-          <h2 className="text-3xl font-semibold text-center text-[#4F46E5] mb-6">
-            Login
+        <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 border border-indigo-300 transition duration-300">
+          <h2 className="text-3xl font-bold text-center text-indigo-600 mb-6">
+            Welcome Back 👋
           </h2>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <input
-              type="email"
-              placeholder="Email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="input"
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="input"
-            />
+          <form onSubmit={handleLogin} className="space-y-5">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Email
+              </label>
+              <input
+                type="email"
+                placeholder="you@example.com"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Password
+              </label>
+              <input
+                type="password"
+                placeholder="••••••••"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+              />
+            </div>
             <button
               type="submit"
-              className="w-full bg-[#4F46E5] hover:bg-[#3b3fcf] text-white py-2 rounded-md font-medium transition-all"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-md font-semibold text-lg transition duration-200"
             >
               Login
             </button>
           </form>
 
-          <p className="mt-6 text-sm text-center text-gray-600">
-            Don't have an account?{" "}
+          <p className="mt-6 text-center text-sm text-gray-600">
+            Don&apos;t have an account?{" "}
             <a
               href="/signup"
-              className="text-[#4F46E5] font-medium hover:underline"
+              className="text-indigo-600 hover:underline font-medium"
             >
               Sign Up
             </a>

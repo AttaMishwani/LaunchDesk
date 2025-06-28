@@ -110,9 +110,6 @@ const JobDetails = () => {
         <p className="text-lg font-semibold text-green-700 mb-2">
           Salary: ${job.salary}
         </p>
-        <p className="text-lg font-semibold text-green-700 mb-2">
-          OwnerId: {job.ownerId}
-        </p>
       </div>
     </div>
   );

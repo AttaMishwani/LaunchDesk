@@ -88,7 +88,7 @@ const ViewJobApplicants = () => {
   return (
     <div className="p-6 max-w-3xl mx-auto">
       <h1 className="text-2xl font-bold mb-6 text-gray-800">
-        Applicants for Job <span className="text-indigo-600">{jobTitle}</span>
+        Applicant for Job <span className="text-indigo-600">{jobTitle}</span>
       </h1>
 
       {error && (
@@ -110,12 +110,24 @@ const ViewJobApplicants = () => {
                   {applicant.userInfo?.email || "N/A"}
                 </span>
               </p>
-              <p className="mb-2">
-                <strong className="text-indigo-600">Answers:</strong>{" "}
-                <span className="text-gray-700">
-                  {applicant.answers?.join(", ") || "No answers provided"}
-                </span>
-              </p>
+              <div className="mb-2">
+                <strong className="text-indigo-600">Answers:</strong>
+                {Array.isArray(applicant.answers?.QA) &&
+                applicant.answers.QA.length > 0 ? (
+                  <ul className="list-disc ml-5 text-gray-700 mt-1">
+                    {applicant.answers.QA.map((qa, idx) => (
+                      <li key={idx}>
+                        <span className="font-semibold">Q:</span> {qa.question}
+                        <br />
+                        <span className="font-semibold">A:</span> {qa.answer}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-gray-500 ml-2">No answers provided</p>
+                )}
+              </div>
+
               <p>
                 <strong className="text-indigo-600">Resume:</strong>{" "}
                 {applicant.resumeURL ? (
