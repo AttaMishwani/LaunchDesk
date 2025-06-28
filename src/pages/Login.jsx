@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../redux/userSlice";
 import Loader from "../ui/Loader";
 import { toast } from "react-toastify";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase/firebase";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -29,14 +31,22 @@ const Login = () => {
         return;
       }
 
-      dispatch(setUser({
-        uid: user.uid,
-        email: user.email,
-        emailVerified: user.emailVerified,
-        displayName: user.displayName || "",
-      }));
+      const userDocRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userDocRef);
+
+      if (userSnap.exists()) {
+        const fullUserdata = {
+          uid: user.uid,
+          email: user.email,
+          emailVerified: user.emailVerified,
+          ...userSnap.data(),
+        };
+
+        dispatch(setUser(fullUserdata));
+      }
 
       toast.success("Login successful!");
+
       navigate("/home");
     } catch (error) {
       console.error("Login error:", error);
@@ -82,7 +92,10 @@ const Login = () => {
 
           <p className="mt-6 text-sm text-center text-gray-600">
             Don't have an account?{" "}
-            <a href="/signup" className="text-[#4F46E5] font-medium hover:underline">
+            <a
+              href="/signup"
+              className="text-[#4F46E5] font-medium hover:underline"
+            >
               Sign Up
             </a>
           </p>

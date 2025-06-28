@@ -20,6 +20,7 @@ const Signup = () => {
   const [skills, setSkills] = useState("");
   const [github, setGithub] = useState("");
   const [linkedin, setLinkedin] = useState("");
+  const [bio, setBio] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -61,6 +62,7 @@ const Signup = () => {
             type,
             username,
             phone,
+            bio,
             skills: skillsArray,
             github,
             linkedin,
@@ -75,6 +77,7 @@ const Signup = () => {
               type,
               username,
               phone,
+              bio,
               skills: skillsArray,
               github,
               linkedin,
@@ -101,33 +104,103 @@ const Signup = () => {
             Create Account
           </h2>
           <form onSubmit={handleSignUp} className="space-y-4">
-            <input type="text" placeholder="Username *" required value={username} onChange={(e) => setUsername(e.target.value)} className="input" />
-            <input type="email" placeholder="Email *" required value={email} onChange={(e) => setEmail(e.target.value)} className="input" />
-            <input type="password" placeholder="Password *" required value={password} onChange={(e) => setPassword(e.target.value)} className="input" />
-            <input type="text" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} className="input" />
-            <input type="text" placeholder="Skills (comma separated)" value={skills} onChange={(e) => setSkills(e.target.value)} className="input" />
-            <input type="url" placeholder="GitHub Profile" value={github} onChange={(e) => setGithub(e.target.value)} className="input" />
-            <input type="url" placeholder="LinkedIn Profile" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} className="input" />
+            <input
+              type="text"
+              placeholder="Username *"
+              required
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="input"
+            />
+            <input
+              type="email"
+              placeholder="Email *"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="input"
+            />
+            <input
+              type="password"
+              placeholder="Password *"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="input"
+            />
+            <input
+              type="text"
+              placeholder="Phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="input"
+            />
+            <input
+              type="text"
+              placeholder="Skills (comma separated)"
+              value={skills}
+              onChange={(e) => setSkills(e.target.value)}
+              className="input"
+            />
+            <input
+              type="text"
+              placeholder="Your Bio"
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              className="input"
+            />
+            <input
+              type="url"
+              placeholder="GitHub Profile"
+              value={github}
+              onChange={(e) => setGithub(e.target.value)}
+              className="input"
+            />
+            <input
+              type="url"
+              placeholder="LinkedIn Profile"
+              value={linkedin}
+              onChange={(e) => setLinkedin(e.target.value)}
+              className="input"
+            />
 
             <div className="flex space-x-6">
               <label className="flex items-center">
-                <input type="radio" value="JobSeeker" checked={type === "JobSeeker"} onChange={(e) => setType(e.target.value)} className="mr-2" />
+                <input
+                  type="radio"
+                  value="JobSeeker"
+                  checked={type === "JobSeeker"}
+                  onChange={(e) => setType(e.target.value)}
+                  className="mr-2"
+                />
                 JobSeeker
               </label>
               <label className="flex items-center">
-                <input type="radio" value="Recruiter" checked={type === "Recruiter"} onChange={(e) => setType(e.target.value)} className="mr-2" />
+                <input
+                  type="radio"
+                  value="Recruiter"
+                  checked={type === "Recruiter"}
+                  onChange={(e) => setType(e.target.value)}
+                  className="mr-2"
+                />
                 Recruiter
               </label>
             </div>
 
-            <button type="submit" className="w-full bg-[#E11D48] hover:bg-[#c9153e] text-white py-2 rounded-md font-medium transition-all">
+            <button
+              type="submit"
+              className="w-full bg-[#E11D48] hover:bg-[#c9153e] text-white py-2 rounded-md font-medium transition-all"
+            >
               Sign Up
             </button>
           </form>
 
           <p className="mt-6 text-sm text-center text-gray-600">
-            Already have an account?{' '}
-            <NavLink to="/login" className="text-[#4F46E5] font-medium hover:underline">
+            Already have an account?{" "}
+            <NavLink
+              to="/login"
+              className="text-[#4F46E5] font-medium hover:underline"
+            >
               Login
             </NavLink>
           </p>

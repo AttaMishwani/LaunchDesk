@@ -28,6 +28,12 @@ const Navbar = () => {
     dispatch(closeMenu());
   };
 
+  const handleLogOut = async () => {
+    await logout();
+    persistor.purge();
+    navigate("/login");
+  };
+
   return (
     <header className="w-full py-4 bg-red-600 text-white px-6 shadow-md">
       <nav className="max-w-[1300px] mx-auto flex items-center justify-between">
@@ -62,6 +68,9 @@ const Navbar = () => {
                 <NavLink to="/profile" className="hover:text-[#E11D48]">
                   Profile
                 </NavLink>
+              </li>
+              <li>
+                <button onClick={handleLogOut}>Log Out</button>
               </li>
             </>
           ) : (

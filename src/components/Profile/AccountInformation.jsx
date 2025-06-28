@@ -4,7 +4,7 @@ import { db } from "../../firebase/firebase";
 import { useDispatch } from "react-redux";
 import { updateEditedUser } from "../../redux/userSlice";
 import { getDownloadURL, uploadBytes, ref } from "firebase/storage";
-import { storage } from "../../firebase/firebase"; // make sure storage is exported in firebase.js
+import { storage } from "../../firebase/firebase"; // make sure storage is exported
 
 const AccountInformation = ({ user }) => {
   const dispatch = useDispatch();
@@ -19,6 +19,8 @@ const AccountInformation = ({ user }) => {
     bio: "",
     github: "",
     linkedin: "",
+    resumeName: "",
+    resumeURL: "",
   });
 
   const [editingMode, setEditingMode] = useState(false);
@@ -27,9 +29,9 @@ const AccountInformation = ({ user }) => {
   const [uploading, setUploading] = useState(null);
 
   useEffect(() => {
-    if (user && user.uid) {
+    if (user) {
       setFormData({
-        uid: user.uid,
+        uid: user.uid || "",
         username: user.username || "",
         email: user.email || "",
         phone: user.phone || "",
@@ -60,9 +62,9 @@ const AccountInformation = ({ user }) => {
   const handleEdit = () => setEditingMode(true);
 
   const handleCancel = () => {
-    if (user && user.uid) {
+    if (user) {
       setFormData({
-        uid: user.uid,
+        uid: user.uid || "",
         username: user.username || "",
         email: user.email || "",
         phone: user.phone || "",
@@ -159,7 +161,7 @@ const AccountInformation = ({ user }) => {
     </div>
   );
 
-  if (loading)
+  if (loading || !user)
     return <div className="text-center mt-10">Loading profile...</div>;
 
   return (

@@ -12,18 +12,34 @@ import { setUser } from "../redux/userSlice";
 import { db } from "../firebase/firebase";
 import JobsPosted from "../components/Profile/JobsPosted";
 import JobsApplied from "../components/Profile/JobsApplied";
+import { persistor } from "../redux/store";
 
 const Profile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.currentUser);
-
   const [selectedOption, setSelectedOption] = useState("Account Information");
 
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser && !currentUser) {
+        const docRef = doc(db, "users", firebaseUser.uid);
+        const userDoc = await getDoc(docRef);
+
+        if (userDoc.exists()) {
+          dispatch(setUser(userDoc.data()));
+        }
+      }
+    });
+
+    return () => unsubscribe();
+  }, [dispatch, currentUser]);
+
   const getOptionsByRole = (role) => {
-    if (role === "freelancer") {
+    if (role === "JobSeeker") {
       return ["Account Information", "Delete Account", "Jobs Applied"];
-    } else if (role === "client") {
+    } else if (role === "Recruiter") {
       return [
         "Account Information",
         "Post a Job",
@@ -37,7 +53,9 @@ const Profile = () => {
 
   const handleLogout = async () => {
     await logout();
+    persistor.purge();
     dispatch(closeMenu());
+
     navigate("/login");
   };
 
@@ -45,7 +63,7 @@ const Profile = () => {
     return <div>Loading profile…</div>;
   }
 
-  const userRole = currentUser.type || currentUser.userType;
+  const userRole = currentUser.type || currentUser.type;
   const options = getOptionsByRole(userRole);
 
   const renderContent = () => {
