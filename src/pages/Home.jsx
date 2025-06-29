@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchPosts } from "../api/fetchPosts";
 import Loader from "../ui/Loader";
 import Button from "../ui/Button";
+import JobPost from "../components/home/JobPost";
 
 const Home = () => {
   const { data, isLoading, error } = useQuery({
@@ -33,19 +34,21 @@ const Home = () => {
           {/* Job List */}
           <div className="space-y-6">
             {data.map((post) => (
-              <div
-                key={post.id}
-                onClick={() => setselectedPost(post)}
-                className="post-card bg-white py-4 px-6 mb-4 rounded-md shadow-md hover:shadow-xl cursor-pointer transition-transform transform hover:scale-105 hover:border-blue-600 border-2 border-transparent"
-              >
-                <h3 className="text-xl font-semibold text-blue-600 mb-2">
-                  {post.title}
-                </h3>
-                <p className="text-gray-700 mb-4">{post.description}</p>
-                <div className="flex justify-between items-center">
-                  <p className="font-bold text-green-600">{post.salary}</p>
-                </div>
-              </div>
+              <JobPost post={post} setselectedPost={setselectedPost} />
+
+              // <div
+              //   key={post.id}
+              //   onClick={() => setselectedPost(post)}
+              //   className="post-card bg-white py-4 px-6 mb-4 rounded-md shadow-md hover:shadow-xl cursor-pointer transition-transform transform hover:scale-105 hover:border-blue-600 border-2 border-transparent"
+              // >
+              //   <h3 className="text-xl font-semibold text-blue-600 mb-2">
+              //     {post.title}
+              //   </h3>
+              //   <p className="text-gray-700 mb-4">{post.description}</p>
+              //   <div className="flex justify-between items-center">
+              //     <p className="font-bold text-green-600">{post.salary}</p>
+              //   </div>
+              // </div>
             ))}
           </div>
 

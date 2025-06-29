@@ -4,6 +4,8 @@ import { TbMenuDeep } from "react-icons/tb";
 import { logout, authStateListener } from "../firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { closeMenu, toggleMenu } from "../redux/menuSlice";
+import { FaBookmark } from "react-icons/fa";
+import { FaUserAlt } from "react-icons/fa";
 
 const Navbar = () => {
   const { showMenu } = useSelector((state) => state.menu);
@@ -65,8 +67,13 @@ const Navbar = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/profile" className="hover:text-[#E11D48]">
-                  Profile
+                <NavLink to="/profile">
+                  <FaUserAlt />
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/savedjobs">
+                  <FaBookmark />
                 </NavLink>
               </li>
               <li>

@@ -1,1 +1,20 @@
-View jobs they applied to
+✅ Current Progress
+You have implemented saving a job to Firestore when the user clicks the bookmark icon.
+
+You're storing only:
+jobId, userId in the savedJobs collection.
+
+📝 To-Do Next Time
+Title: Implement Full Saved Jobs Functionality
+
+✅ [Already Done] Save jobId and userId to Firestore on bookmark click.
+
+🔲 Check if a job is already saved to display the filled/unfilled bookmark icon.
+
+🔲 Unsave (Remove) a job from Firestore on second click.
+
+🔲 Create a /saved-jobs page to show all jobs the user has saved.
+
+🔲 On the saved jobs page, fetch the actual job data from posts using the jobId.
+
+🔲 (Optional) Show a message like: "No saved jobs yet" if the list is empty.

@@ -17,6 +17,7 @@ import ScreeningQuestions from "./pages/ScreeningQuestions";
 import Review from "./pages/Review";
 import ThankYou from "./pages/ThankYou";
 import ViewJobApplicants from "./pages/ViewJobApplicants";
+import SavedJobs from "./pages/SavedJobs";
 
 function Loader() {
   return (
@@ -81,6 +82,7 @@ function App() {
             </RedirectIfLoggedIn>
           }
         />
+
         <Route
           path="login"
           element={
@@ -91,6 +93,7 @@ function App() {
         />
 
         {/* Protected routes */}
+
         <Route
           path="dashboard"
           element={
@@ -99,6 +102,7 @@ function App() {
             </RequireAuth>
           }
         />
+
         <Route
           path="profile"
           element={
@@ -107,6 +111,7 @@ function App() {
             </RequireAuth>
           }
         />
+
         <Route
           path="userdetailspage"
           element={
@@ -115,6 +120,7 @@ function App() {
             </RequireAuth>
           }
         />
+
         <Route
           path="jobs/:id"
           element={
@@ -123,6 +129,7 @@ function App() {
             </RequireAuth>
           }
         />
+
         <Route
           path="screening-questions/:id"
           element={
@@ -131,6 +138,7 @@ function App() {
             </RequireAuth>
           }
         />
+
         <Route
           path="review"
           element={
@@ -144,6 +152,15 @@ function App() {
           element={
             <RequireAuth>
               <ThankYou />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="savedjobs"
+          element={
+            <RequireAuth>
+              <SavedJobs />
             </RequireAuth>
           }
         />

@@ -14,7 +14,6 @@ const AccountInformation = ({ user }) => {
     username: "",
     email: "",
     phone: "",
-    education: "",
     skills: "",
     bio: "",
     github: "",
@@ -35,7 +34,7 @@ const AccountInformation = ({ user }) => {
         username: user.username || "",
         email: user.email || "",
         phone: user.phone || "",
-        education: user.education || "",
+
         skills: user.skills || "",
         bio: user.bio || "",
         github: user.github || "",
@@ -68,7 +67,6 @@ const AccountInformation = ({ user }) => {
         username: user.username || "",
         email: user.email || "",
         phone: user.phone || "",
-        education: user.education || "",
         skills: user.skills || "",
         bio: user.bio || "",
         github: user.github || "",
@@ -174,7 +172,7 @@ const AccountInformation = ({ user }) => {
         {renderField("Username", "username")}
         {renderField("Email", "email")}
         {renderField("Phone", "phone")}
-        {renderField("Education", "education")}
+
         {renderField("Skills", "skills")}
         {renderField("Bio", "bio")}
         {renderField("GitHub", "github")}
