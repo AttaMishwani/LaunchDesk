@@ -6,9 +6,22 @@ import { fetchPosts } from "../api/fetchPosts";
 import Loader from "../ui/Loader";
 import Button from "../ui/Button";
 import JobPost from "../components/home/JobPost";
+import { useSavedJobs } from "../api/fetchBookMarkedJobs";
+import { useSelector } from "react-redux";
 
 const Home = () => {
-  const { data, isLoading, error } = useQuery({
+  const currentUser = useSelector((state) => state.user.currentUser);
+
+  useEffect(() => {
+    console.log("Current User:", currentUser);
+  }, []);
+
+  const { isLoading: isBookMarkLoading } = useSavedJobs(currentUser?.uid);
+  const {
+    data,
+    isLoading: isPostLoading,
+    error,
+  } = useQuery({
     queryKey: ["posts"],
     queryFn: fetchPosts,
   });
@@ -21,7 +34,7 @@ const Home = () => {
     }
   }, [data, selectedPost]);
 
-  if (isLoading) return <Loader />;
+  if (isPostLoading || isBookMarkLoading) return <Loader />;
   if (error) return <div>Error loading posts</div>;
 
   return (
@@ -34,7 +47,11 @@ const Home = () => {
           {/* Job List */}
           <div className="space-y-6">
             {data.map((post) => (
-              <JobPost post={post} setselectedPost={setselectedPost} />
+              <JobPost
+                key={post.id}
+                post={post}
+                setselectedPost={setselectedPost}
+              />
 
               // <div
               //   key={post.id}

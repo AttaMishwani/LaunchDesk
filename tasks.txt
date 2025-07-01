@@ -1,20 +1,35 @@
-✅ Current Progress
-You have implemented saving a job to Firestore when the user clicks the bookmark icon.
+✅ Tasks To Do:
+Fix Bookmark Save Function
 
-You're storing only:
-jobId, userId in the savedJobs collection.
+Rename savedJobs.js to bookmarkJob.js (if not already).
 
-📝 To-Do Next Time
-Title: Implement Full Saved Jobs Functionality
+Update the function to return docRef.id after saving.
 
-✅ [Already Done] Save jobId and userId to Firestore on bookmark click.
+Make sure you're using bookmarkJob() correctly in JobPost.jsx.
 
-🔲 Check if a job is already saved to display the filled/unfilled bookmark icon.
+Check Firestore Write
 
-🔲 Unsave (Remove) a job from Firestore on second click.
+Open Firestore console.
 
-🔲 Create a /saved-jobs page to show all jobs the user has saved.
+Go to savedJobs collection.
 
-🔲 On the saved jobs page, fetch the actual job data from posts using the jobId.
+Check if a new document with userId and jobId is created when bookmarking.
 
-🔲 (Optional) Show a message like: "No saved jobs yet" if the list is empty.
+Ensure Bookmarks Load on Page Refresh
+
+Double-check you're using useSavedJobs(currentUser?.uid) after currentUser is available in Home.jsx.
+
+Verify setSavedJobs(data) is actually updating Redux on load.
+
+Console Debugging
+
+Log savedJobIds from Redux in JobPost.jsx to confirm it's populated.
+
+Add console.log("Fetched bookmarks:", data) in useSavedJobs().
+
+Bonus (Optional)
+
+Add loading state while bookmarks are loading.
+
+Add toast alerts on save/remove for better UX.
+
