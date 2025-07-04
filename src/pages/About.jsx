@@ -2,16 +2,16 @@ import React from "react";
 
 const About = () => {
   return (
-    <div className="bg-gray-50 text-gray-800">
+    <div className="bg-[var(--color-bgc)] text-[var(--color-textLight)] font-sans">
       {/* Hero Section */}
-      <section className="min-h-[90vh] bg-gradient-to-r from-blue-100 via-white to-blue-100 flex items-center justify-center px-6 py-16">
-        <div className="max-w-4xl text-center">
-          <h1 className="text-5xl font-bold text-blue-700 mb-6">
-            We're Building The Future of Job Applications
+      <section className="min-h-[90vh] flex items-center justify-center px-6 py-20 bg-[var(--color-bgc)] text-center">
+        <div className="max-w-4xl">
+          <h1 className="text-5xl sm:text-6xl font-black text-[var(--color-primary)] mb-6 leading-tight animate-pulse">
+            🎯 Find Jobs. <br className="sm:hidden" /> Not Stress.
           </h1>
-          <p className="text-lg text-gray-700">
-            Simplifying the hiring journey for both companies and job seekers
-            through smart and intuitive tools.
+          <p className="text-lg sm:text-xl text-[var(--color-textMuted)] max-w-xl mx-auto">
+            We're not LinkedIn — we're LinkedLit. Built for real ones who want
+            real jobs with ✨zero cringe✨.
           </p>
         </div>
       </section>
@@ -20,89 +20,94 @@ const About = () => {
       <section className="py-20 px-6 max-w-6xl mx-auto">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="text-3xl font-bold text-blue-600 mb-4">Our Story</h2>
-            <p className="text-gray-700 leading-relaxed">
-              We started as a group of passionate developers who noticed how
-              hard it was to apply for jobs efficiently. We decided to build a
-              platform that puts job seekers first — simple, fast, and
-              effective. From submitting resumes to getting hired — we're with
-              you every step of the way.
+            <h2 className="text-3xl font-bold text-[var(--color-primary)] mb-4">
+              Our Story 📖
+            </h2>
+            <p className="text-[var(--color-textMuted)] leading-relaxed text-[17px]">
+              Once upon a deadline, a bunch of devs got tired of broken job
+              portals, spammy listings, and ghosted applications. So we built
+              JobConnect — a chill, smart platform that actually works. No
+              fluff. No fuss. Just jobs.
             </p>
           </div>
-          <div className="bg-white h-64 rounded-xl shadow-lg border border-blue-100 flex items-center justify-center text-blue-600 text-2xl font-semibold">
-            💼 Your Dream Job Awaits
+          <div className="bg-[var(--color-cardBg)] h-64 rounded-xl shadow-md border border-[var(--color-primary)] flex items-center justify-center text-[var(--color-primary)] text-2xl font-semibold hover:scale-[1.02] transition-all">
+            🔥 Real tools. Real people. Real jobs.
           </div>
         </div>
       </section>
 
       {/* Mission Timeline */}
-      <section className="bg-white py-20 px-6">
+      <section className="py-20 px-6">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-blue-600">Our Mission</h2>
-          <p className="text-gray-600 mt-2">What drives us every day</p>
+          <h2 className="text-3xl font-bold text-[var(--color-primary)]">
+            Our Mission 👾
+          </h2>
+          <p className="text-[var(--color-textMuted)] mt-2 text-base">
+            What gets us hyped daily.
+          </p>
         </div>
-        <div className="relative border-l-4 border-blue-500 pl-6 max-w-3xl mx-auto space-y-10">
-          <div>
-            <h3 className="text-xl font-semibold text-blue-700">
-              Empower Job Seekers
-            </h3>
-            <p className="text-gray-600">
-              Give applicants the tools they need to stand out and succeed.
-            </p>
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold text-blue-700">
-              Simplify Hiring
-            </h3>
-            <p className="text-gray-600">
-              Make the hiring process smoother for employers with effective
-              tools.
-            </p>
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold text-blue-700">
-              Build Connections
-            </h3>
-            <p className="text-gray-600">
-              Bridge the gap between top talent and meaningful work
-              opportunities.
-            </p>
-          </div>
+        <div className="relative border-l-4 border-[var(--color-primary)] pl-6 max-w-3xl mx-auto space-y-12">
+          {[
+            {
+              title: "📢 Boost Job Seekers",
+              text: "Help you stand out with a fire resume & zero anxiety.",
+            },
+            {
+              title: "💻 Make Hiring Less Mid",
+              text: "A hiring process that doesn’t feel like solving quantum physics.",
+            },
+            {
+              title: "🤝 Connect You With Vibes",
+              text: "We link real talent with real teams. No fake vibes allowed.",
+            },
+          ].map(({ title, text }, i) => (
+            <div key={i}>
+              <h3 className="text-xl font-semibold text-[var(--color-primary)]">
+                {title}
+              </h3>
+              <p className="text-[var(--color-textMuted)]">{text}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* Meet the Team */}
-      <section className="py-20 px-6 bg-blue-50">
+      <section className="py-20 px-6 bg-[var(--color-cardBg)]">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-blue-700">Meet The Team</h2>
-          <p className="text-gray-600 mt-2">
-            We're builders, dreamers, and doers.
+          <h2 className="text-3xl font-bold text-[var(--color-primary)]">
+            The Cool Nerds Behind It 😎
+          </h2>
+          <p className="text-[var(--color-textMuted)] mt-2">
+            No CEOs. Just G.O.A.T.s.
           </p>
         </div>
         <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 max-w-6xl mx-auto">
-          {[1, 2, 3].map((i) => (
+          {["👩‍💻", "🧑‍🚀", "🧙‍♂️"].map((emoji, i) => (
             <div
               key={i}
-              className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition duration-300 text-center"
+              className="bg-[var(--color-bgc)] border border-[var(--color-cardBg)] rounded-xl p-6 shadow-md hover:shadow-xl hover:scale-[1.03] transition-all duration-300 text-center"
             >
-              <div className="h-24 w-24 mx-auto bg-blue-200 rounded-full mb-4" />
-              <h3 className="font-semibold text-blue-700 text-lg">
-                Team Member {i}
+              <div className="text-5xl mb-4">{emoji}</div>
+              <h3 className="font-semibold text-[var(--color-primary)] text-lg">
+                Dev #{i + 1}
               </h3>
-              <p className="text-gray-600 text-sm">Frontend Developer</p>
+              <p className="text-[var(--color-textMuted)] text-sm">
+                Frontend Ninja
+              </p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Closing Quote */}
-      <section className="py-20 px-6 bg-white">
+      <section className="py-20 px-6 bg-[var(--color-bgc)]">
         <div className="max-w-2xl mx-auto text-center">
-          <blockquote className="text-2xl italic text-gray-700">
-            “We’re not just building software — we’re building hope for every
-            job seeker out there.”
+          <blockquote className="text-2xl italic text-[var(--color-textLight)]">
+            “This ain't just an app — it’s your glow up moment.”
           </blockquote>
-          <p className="mt-4 text-blue-600 font-bold">— The JobConnect Team</p>
+          <p className="mt-4 text-[var(--color-primary)] font-bold">
+            — Team JobConnect ⚡
+          </p>
         </div>
       </section>
     </div>

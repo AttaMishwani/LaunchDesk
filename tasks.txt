@@ -1,35 +1,27 @@
-✅ Tasks To Do:
-Fix Bookmark Save Function
+⚠️ Known Issue: Bookmark Permissions
+🔐 Firebase Firestore Permission Error
 
-Rename savedJobs.js to bookmarkJob.js (if not already).
+While implementing the bookmarked jobs feature, an issue was encountered related to Firestore security rules. When fetching saved job data for authenticated users, Firebase throws the following error:
 
-Update the function to return docRef.id after saving.
+makefile
+Copy
+Edit
+FirebaseError: Missing or insufficient permissions.
+This occurs because the current Firestore rules restrict read access to the savedJobs or posts collections. The feature works as expected when permissions are relaxed for development, but stricter production-level rules are currently preventing access for some users.
 
-Make sure you're using bookmarkJob() correctly in JobPost.jsx.
+✅ Bookmarked job data is being correctly stored and retrieved locally via Redux and Firebase.
+❌ However, Firestore denies read access under current security policies.
 
-Check Firestore Write
+This issue will be resolved by updating Firestore rules to securely allow read access for authenticated users to their own saved jobs.
 
-Open Firestore console.
+Let me know if you'd like a separate section for a solution or development instructions.
 
-Go to savedJobs collection.
 
-Check if a new document with userId and jobId is created when bookmarking.
 
-Ensure Bookmarks Load on Page Refresh
 
-Double-check you're using useSavedJobs(currentUser?.uid) after currentUser is available in Home.jsx.
 
-Verify setSavedJobs(data) is actually updating Redux on load.
 
-Console Debugging
 
-Log savedJobIds from Redux in JobPost.jsx to confirm it's populated.
 
-Add console.log("Fetched bookmarks:", data) in useSavedJobs().
 
-Bonus (Optional)
-
-Add loading state while bookmarks are loading.
-
-Add toast alerts on save/remove for better UX.
-
+Ask ChatGPT

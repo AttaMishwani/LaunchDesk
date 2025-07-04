@@ -1,68 +1,47 @@
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
-import { db } from "../firebase/firebase";
-import { data } from "react-router-dom";
 import JobPost from "../components/home/JobPost";
+import Loader from "../ui/Loader";
+import { useSavedJobDetails } from "../api/useSavedJobDetails";
 
 const SavedJobs = () => {
   const savedJobIds = useSelector((state) => state.bookmarkedJobs.jobIds);
-  const currentUser = useSelector((state) => state.user.currentUser);
-  const [savedJobs, setSavedJobs] = useState([]);
-  const [loading, setLoading] = useState(false);
 
-  console.log(savedJobIds);
-  useEffect(() => {
-    const fetchSavedJobs = async () => {
-      try {
-        setLoading(true);
+  const {
+    data: savedJobs = [],
+    isLoading,
+    isError,
+  } = useSavedJobDetails(savedJobIds);
 
-        const jobs = await Promise.all(
-          savedJobIds.map(async (jobId) => {
-            const docRef = doc(db, "posts", jobId);
-            const docSnap = await getDoc(docRef);
-
-            if (docSnap.exists()) {
-              return { id: docSnap.id, ...docSnap.data() };
-            } else {
-              return null;
-            }
-          })
-        );
-
-        const filteredJobs = jobs.filter((job) => job !== null);
-        setSavedJobs(filteredJobs);
-        console.log("Saved Jobs:", filteredJobs);
-      } catch (error) {
-        console.error("Failed to fetch saved job details:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSavedJobs();
-  }, [savedJobIds]);
-
+  if (isError)
+    return (
+      <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md shadow-sm m-5">
+        <strong className="font-semibold">Oops!</strong> Failed to load
+        bookmarked jobs.
+        <p className="text-sm mt-1">
+          Please try again later or check your internet connection.
+        </p>
+      </div>
+    );
   return (
     <>
-      {loading ? (
-        <p>Loading...</p>
-      ) : savedJobs.length === 0 ? (
-        <p>No jobs bookmarked yet.</p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {savedJobs.map((job) => (
-            <JobPost key={job.id} post={job} />
-          ))}
+      <div className="w-full max-w-[1300px] py-5  mx-auto">
+        <h2 className="text-2xl font-bold mb-5">Saved Jobs</h2>
+        <hr className="mb-8" />
+        <div className="job-post-container w-full flex flex-col">
+          {isLoading ? (
+            <Loader />
+          ) : savedJobs.length === 0 ? (
+            <p>You haven’t liked anything yet 😴</p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {savedJobs.map((job) => (
+                <JobPost key={job.id} post={job} />
+              ))}
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </>
   );
 };

@@ -1,4 +1,3 @@
-// Updated Signup.js (with user details form combined)
 import { useState, useEffect } from "react";
 import { signUp } from "../firebase/auth";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -25,7 +24,6 @@ const Signup = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Check if already signed in and verified
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -42,7 +40,7 @@ const Signup = () => {
 
     try {
       const user = await signUp(email, password, type);
-      toast("Verification email sent. Please check your inbox.");
+      toast("📨 Verification email sent. Go check it!");
 
       const checkInterval = setInterval(async () => {
         await user.reload();
@@ -50,9 +48,7 @@ const Signup = () => {
         if (user.emailVerified) {
           clearInterval(checkInterval);
 
-          await updateProfile(user, {
-            displayName: username,
-          });
+          await updateProfile(user, { displayName: username });
 
           const skillsArray = skills.split(",").map((s) => s.trim());
 
@@ -89,119 +85,128 @@ const Signup = () => {
       }, 3000);
     } catch (error) {
       console.error("❌ Signup error:", error);
-      alert("Signup failed: " + error.message);
+      toast.error("Signup failed: " + error.message);
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
+    <div className="flex items-center justify-center min-h-screen bg-[var(--color-bgc)] px-4">
       {loading ? (
         <Loader />
       ) : (
-        <div className="bg-white shadow-lg rounded-xl w-full max-w-md p-8 border-2 border-blue-600">
-          <h2 className="text-3xl font-semibold text-center text-[#4F46E5] mb-6">
-            Create Account
+        <div className="w-full max-w-md mt-5 bg-[var(--color-cardBg)] shadow-lg rounded-xl p-8 border border-[var(--color-primary)]">
+          <h2 className="text-3xl font-bold text-[var(--color-primary)] text-center mb-2">
+            Let’s Create Your Profile 💼
           </h2>
-          <form onSubmit={handleSignUp} className="space-y-4">
+          <p className="text-sm text-center text-[var(--color-textMuted)] mb-6">
+            Just a few details and you're good to go.
+          </p>
+          <form
+            onSubmit={handleSignUp}
+            className="space-y-4 text-[var(--color-textLight)]"
+          >
             <input
               type="text"
               placeholder="Username *"
-              required
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="input"
+              required
+              className="bg-transparent border border-[var(--color-textMuted)] rounded-md w-full px-4 py-2 placeholder-[var(--color-textMuted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition"
             />
             <input
               type="email"
               placeholder="Email *"
-              required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="input"
+              required
+              className="bg-transparent border border-[var(--color-textMuted)] rounded-md w-full px-4 py-2 placeholder-[var(--color-textMuted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition"
             />
             <input
               type="password"
               placeholder="Password *"
-              required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="input"
+              required
+              className="bg-transparent border border-[var(--color-textMuted)] rounded-md w-full px-4 py-2 placeholder-[var(--color-textMuted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition"
             />
             <input
               type="text"
               placeholder="Phone"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="input"
+              className="bg-transparent border border-[var(--color-textMuted)] rounded-md w-full px-4 py-2 placeholder-[var(--color-textMuted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition"
             />
             <input
               type="text"
               placeholder="Skills (comma separated)"
               value={skills}
               onChange={(e) => setSkills(e.target.value)}
-              className="input"
+              className="bg-transparent border border-[var(--color-textMuted)] rounded-md w-full px-4 py-2 placeholder-[var(--color-textMuted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition"
             />
             <input
               type="text"
-              placeholder="Your Bio"
+              placeholder="Short Bio"
               value={bio}
               onChange={(e) => setBio(e.target.value)}
-              className="input"
+              className="bg-transparent border border-[var(--color-textMuted)] rounded-md w-full px-4 py-2 placeholder-[var(--color-textMuted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition"
             />
             <input
               type="url"
               placeholder="GitHub Profile"
               value={github}
               onChange={(e) => setGithub(e.target.value)}
-              className="input"
+              className="bg-transparent border border-[var(--color-textMuted)] rounded-md w-full px-4 py-2 placeholder-[var(--color-textMuted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition"
             />
             <input
               type="url"
               placeholder="LinkedIn Profile"
               value={linkedin}
               onChange={(e) => setLinkedin(e.target.value)}
-              className="input"
+              className="bg-transparent border border-[var(--color-textMuted)] rounded-md w-full px-4 py-2 placeholder-[var(--color-textMuted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition"
             />
 
-            <div className="flex space-x-6">
-              <label className="flex items-center">
+            {/* Role Selector */}
+            <div className="flex justify-center gap-4 mt-2">
+              <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="radio"
                   value="JobSeeker"
                   checked={type === "JobSeeker"}
                   onChange={(e) => setType(e.target.value)}
-                  className="mr-2"
+                  className="accent-[var(--color-primary)]"
                 />
-                JobSeeker
+                <span className="text-[var(--color-textLight)]">
+                  Job Seeker
+                </span>
               </label>
-              <label className="flex items-center">
+              <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="radio"
                   value="Recruiter"
                   checked={type === "Recruiter"}
                   onChange={(e) => setType(e.target.value)}
-                  className="mr-2"
+                  className="accent-[var(--color-primary)]"
                 />
-                Recruiter
+                <span className="text-[var(--color-textLight)]">Recruiter</span>
               </label>
             </div>
 
             <button
               type="submit"
-              className="w-full bg-[#E11D48] hover:bg-[#c9153e] text-white py-2 rounded-md font-medium transition-all"
+              className="w-full bg-[var(--color-primary)] hover:bg-sky-500 text-[var(--color-bgc)] py-2.5 rounded-md font-bold text-lg transition"
             >
-              Sign Up
+              Sign Me Up ✨
             </button>
           </form>
 
-          <p className="mt-6 text-sm text-center text-gray-600">
-            Already have an account?{" "}
+          <p className="mt-6 text-sm text-center text-[var(--color-textMuted)]">
+            Already vibing here?{" "}
             <NavLink
               to="/login"
-              className="text-[#4F46E5] font-medium hover:underline"
+              className="text-[var(--color-primary)] font-medium hover:underline"
             >
-              Login
+              Log in
             </NavLink>
           </p>
         </div>

@@ -18,7 +18,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.currentUser);
-  const [selectedOption, setSelectedOption] = useState("Account Information");
+  const [selectedOption, setSelectedOption] = useState("👤 Account Info");
 
   useEffect(() => {
     const auth = getAuth();
@@ -26,7 +26,6 @@ const Profile = () => {
       if (firebaseUser && !currentUser) {
         const docRef = doc(db, "users", firebaseUser.uid);
         const userDoc = await getDoc(docRef);
-
         if (userDoc.exists()) {
           dispatch(setUser(userDoc.data()));
         }
@@ -38,16 +37,16 @@ const Profile = () => {
 
   const getOptionsByRole = (role) => {
     if (role === "JobSeeker") {
-      return ["Account Information", "Delete Account", "Jobs Applied"];
+      return ["👤 Account Info", "🗑️ Delete Account", "📌 Jobs Applied"];
     } else if (role === "Recruiter") {
       return [
-        "Account Information",
-        "Post a Job",
-        "Delete Account",
-        "Jobs Posted",
+        "👤 Account Info",
+        "📢 Post a Job",
+        "🗑️ Delete Account",
+        "📋 Jobs Posted",
       ];
     } else {
-      return ["Account Information"];
+      return ["👤 Account Info"];
     }
   };
 
@@ -55,12 +54,15 @@ const Profile = () => {
     await logout();
     persistor.purge();
     dispatch(closeMenu());
-
     navigate("/login");
   };
 
   if (!currentUser) {
-    return <div>Loading profile…</div>;
+    return (
+      <div className="text-center mt-20 text-xl font-semibold text-white animate-pulse">
+        Loading profile… ⚡
+      </div>
+    );
   }
 
   const userRole = currentUser.type || currentUser.type;
@@ -68,15 +70,15 @@ const Profile = () => {
 
   const renderContent = () => {
     switch (selectedOption) {
-      case "Account Information":
+      case "👤 Account Info":
         return <AccountInformation user={currentUser} />;
-      case "Post a Job":
+      case "📢 Post a Job":
         return <PostAJob />;
-      case "Delete Account":
+      case "🗑️ Delete Account":
         return <DeleteAccount />;
-      case "Jobs Posted":
+      case "📋 Jobs Posted":
         return <JobsPosted />;
-      case "Jobs Applied":
+      case "📌 Jobs Applied":
         return <JobsApplied />;
       default:
         return <AccountInformation user={currentUser} />;
@@ -84,32 +86,37 @@ const Profile = () => {
   };
 
   return (
-    <div className="w-full">
-      <div className="profile-content py-10 flex w-full max-w-[1300px] mx-auto">
-        <div className="profile-options flex flex-col min-w-[250px] bg-white shadow-md rounded-xl p-4 gap-2">
+    <div className="w-full min-h-screen bg-gradient-to-br  text-white pt-10 px-4 sm:px-8">
+      <div className="flex flex-col md:flex-row gap-6 max-w-7xl mx-auto">
+        {/* Sidebar */}
+        <div className="w-full md:w-[260px] bg-[#1f2235] rounded-2xl  p-6 space-y-4 border border-[#31344b]">
+          <h2 className="text-2xl font-extrabold text-primary mb-4">
+            Yo, {currentUser.username?.split(" ")[0] || "User"} 👋
+          </h2>
           {options.map((option, index) => (
             <div
               key={index}
               onClick={() => setSelectedOption(option)}
-              className={`transition-all duration-200 border px-4 py-3 rounded-lg cursor-pointer ${
+              className={`w-full py-3 px-4 rounded-xl cursor-pointer transition-all duration-200 text-sm font-semibold ${
                 selectedOption === option
-                  ? "bg-gray-700 text-white border-gray-700"
-                  : "bg-gray-100 text-gray-800 hover:bg-gray-200 border-gray-300"
+                  ? "bg-primary text-white shadow-lg"
+                  : "bg-[#2a2d41] hover:bg-[#3a3e5c] text-gray-300"
               }`}
             >
-              <h2 className="text-lg font-medium select-none">{option}</h2>
+              {option}
             </div>
           ))}
 
           <button
             onClick={handleLogout}
-            className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 mt-4 rounded-lg transition duration-200"
+            className="w-full mt-6 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-xl transition duration-200"
           >
-            Logout
+            🚪 Logout
           </button>
         </div>
 
-        <div className="container min-h-12 min-w-[70%] p-4">
+        {/* Main content */}
+        <div className="flex-1 bg-[#1f2235] border border-[#31344b] rounded-2xl  p-6">
           {renderContent()}
         </div>
       </div>

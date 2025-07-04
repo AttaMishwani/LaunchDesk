@@ -37,11 +37,13 @@ const Navbar = () => {
   };
 
   return (
-    <header className="w-full py-4 bg-[#4F46E5] text-white px-6 shadow-md">
+    <header className="w-full py-4 bg-bgc text-white px-6 shadow-md">
       <nav className="max-w-[1300px] mx-auto flex items-center justify-between">
         <div className="logo">
           <NavLink to="/">
-            <h1 className="text-2xl font-bold text-[#F8FAFC]">LaunchDesk</h1>
+            <h1 className="text-2xl font-bold text-[#F8FAFC]">
+              Launch<span className="text-primary">Desk</span>
+            </h1>
           </NavLink>
         </div>
 

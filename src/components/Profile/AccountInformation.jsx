@@ -1,10 +1,10 @@
 import { doc, updateDoc } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
-import { db } from "../../firebase/firebase";
+import { db, storage } from "../../firebase/firebase";
 import { useDispatch } from "react-redux";
 import { updateEditedUser } from "../../redux/userSlice";
 import { getDownloadURL, uploadBytes, ref } from "firebase/storage";
-import { storage } from "../../firebase/firebase"; // make sure storage is exported
+import { toast } from "react-toastify";
 
 const AccountInformation = ({ user }) => {
   const dispatch = useDispatch();
@@ -34,7 +34,6 @@ const AccountInformation = ({ user }) => {
         username: user.username || "",
         email: user.email || "",
         phone: user.phone || "",
-
         skills: user.skills || "",
         bio: user.bio || "",
         github: user.github || "",
@@ -82,11 +81,7 @@ const AccountInformation = ({ user }) => {
   const handleSave = async () => {
     try {
       const { uid, ...dataToUpdate } = formData;
-
-      if (!uid) {
-        console.error("UID not found, cannot update.");
-        return;
-      }
+      if (!uid) return toast.error("User not found.");
 
       if (resumeFile) {
         setUploading(true);
@@ -108,51 +103,61 @@ const AccountInformation = ({ user }) => {
       await updateDoc(userRef, dataToUpdate);
 
       dispatch(updateEditedUser({ ...formData, ...dataToUpdate }));
+      toast.success("Profile updated successfully 🎉");
       setEditingMode(false);
       setResumeFile(null);
     } catch (error) {
-      console.error("❌ Error updating user info:", error.message);
+      toast.error("Failed to update profile 😓");
+      console.error("Error:", error.message);
     }
   };
 
-  const renderField = (label, name) => (
-    <div className="flex flex-col gap-1 sm:flex-row sm:items-center mb-4">
-      <label className="font-medium w-36 text-gray-700">{label}:</label>
+  const renderField = (label, name, icon = "") => (
+    <div className="flex flex-col gap-1">
+      <label className="text-sm text-textMuted mb-1">
+        {icon} {label}
+      </label>
       {editingMode ? (
         <input
           type="text"
           name={name}
           value={formData[name]}
           onChange={handleChange}
-          className="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder={`Enter your ${label.toLowerCase()}`}
+          className="bg-[#1F2937] text-textLight border border-primary rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-400"
         />
       ) : (
-        <p className="text-gray-800">{formData[name] || "Not provided"}</p>
+        <p className="text-textLight">{formData[name] || "Not provided"}</p>
       )}
     </div>
   );
 
   const renderResumeSection = () => (
-    <div className="flex flex-col sm:flex-row sm:items-center mb-4">
-      <label className="font-medium w-36 text-gray-700">Resume:</label>
+    <div className="flex flex-col">
+      <label className="text-sm text-textMuted mb-1">📎 Resume</label>
       {editingMode ? (
         <div className="flex flex-col gap-2">
           <input
             type="file"
             accept=".pdf,.doc,.docx"
             onChange={handleResumeUpload}
-            className="block"
+            className="text-sm text-textLight"
           />
           {formData.resumeName && !resumeFile && (
-            <p className="text-sm text-gray-600">
-              Current File : <strong>{formData.resumeName}</strong>
+            <p className="text-xs text-gray-400">
+              Current: <strong>{formData.resumeName}</strong>
             </p>
           )}
         </div>
       ) : formData.resumeName ? (
-        <p>
-          Uploaded : <strong>{formData.resumeName}</strong>
-        </p>
+        <a
+          href={formData.resumeURL}
+          target="_blank"
+          rel="noreferrer"
+          className="text-sky-400 underline text-sm"
+        >
+          View {formData.resumeName}
+        </a>
       ) : (
         <p className="text-gray-500 italic">No resume uploaded</p>
       )}
@@ -160,48 +165,51 @@ const AccountInformation = ({ user }) => {
   );
 
   if (loading || !user)
-    return <div className="text-center mt-10">Loading profile...</div>;
+    return (
+      <div className="text-center mt-10 text-textLight">
+        ⏳ Loading profile...
+      </div>
+    );
 
   return (
-    <div className="p-6 bg-white shadow-xl rounded-lg max-w-3xl mx-auto mt-10">
-      <h2 className="text-3xl font-bold mb-6 text-gray-800 border-b pb-2">
-        Account Information
+    <div className="bg-cardBg text-textLight shadow-xl border border-primary rounded-2xl p-8 max-w-3xl mx-auto mt-10 animate-fadeIn">
+      <h2 className="text-3xl font-extrabold mb-6 text-primary">
+        👤 Your Profile
       </h2>
 
-      <div className="space-y-4">
-        {renderField("Username", "username")}
-        {renderField("Email", "email")}
-        {renderField("Phone", "phone")}
-
-        {renderField("Skills", "skills")}
-        {renderField("Bio", "bio")}
-        {renderField("GitHub", "github")}
-        {renderField("LinkedIn", "linkedin")}
+      <div className="grid sm:grid-cols-2 gap-6">
+        {renderField("Username", "username", "👾")}
+        {renderField("Email", "email", "📧")}
+        {renderField("Phone", "phone", "📱")}
+        {renderField("Skills", "skills", "💡")}
+        {renderField("Bio", "bio", "🧠")}
+        {renderField("GitHub", "github", "🐙")}
+        {renderField("LinkedIn", "linkedin", "💼")}
         {renderResumeSection()}
       </div>
 
       {editingMode ? (
-        <div className="flex gap-4 mt-6">
+        <div className="flex flex-wrap gap-4 mt-8">
           <button
             onClick={handleSave}
-            className="bg-green-600 hover:bg-green-700 transition text-white px-5 py-2 rounded-md"
+            className="bg-emerald-500 hover:bg-emerald-600 transition text-white px-6 py-2 rounded-md shadow"
           >
-            {uploading ? "Uploading..." : "Save Changes"}
+            {uploading ? "Uploading..." : "💾 Save"}
           </button>
           <button
             onClick={handleCancel}
-            className="bg-gray-400 hover:bg-gray-500 transition text-white px-5 py-2 rounded-md"
+            className="bg-gray-600 hover:bg-gray-700 transition text-white px-6 py-2 rounded-md shadow"
           >
-            Cancel
+            🚫 Cancel
           </button>
         </div>
       ) : (
-        <div className="mt-6">
+        <div className="mt-8">
           <button
             onClick={handleEdit}
-            className="bg-blue-600 hover:bg-blue-700 transition text-white px-6 py-2 rounded-md"
+            className="bg-sky-600 hover:bg-sky-700 transition text-white px-6 py-2 rounded-md shadow"
           >
-            Edit Profile
+            ✏️ Edit Profile
           </button>
         </div>
       )}

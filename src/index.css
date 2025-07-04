@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+
+@theme {
+    --color-primary: #0EA5E9;
+    --color-bgc: #121212;
+    --color-cardBg: #1F2937;
+    --color-textLight: #F1F5F9;
+    --color-textMuted: #9CA3AF;
+}
+
+body {
+    background-color: #121212;
+}
+
+.webMenu {
+    display: flex;
+    flex-direction: row;
+}
+
+.toggle-btn {
+    display: none;
+}
+
+@media (max-width:1024px) {
+    .webMenu {
+        display: none;
+    }
+
+    .mobileMenu {
+        position: absolute;
+        top: 12%;
+        left: 0;
+        background-color: #4F46E5;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    .toggle-btn {
+        display: block;
+    }
+}

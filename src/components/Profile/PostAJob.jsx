@@ -1,8 +1,7 @@
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { db } from "../../firebase/firebase";
 import { useSelector } from "react-redux";
-import { current } from "@reduxjs/toolkit";
 import Loader from "../../ui/Loader";
 import Popup from "../../ui/Popup";
 
@@ -29,7 +28,7 @@ const PostAJob = () => {
 
     const { title, description, location, company, salary } = jobData;
     if (!title || !description || !location || !company || !salary) {
-      alert("Please fill in all required fields before submitting.");
+      alert("Yo! Fill in all the fields first 😤");
       return;
     }
 
@@ -46,8 +45,6 @@ const PostAJob = () => {
         },
       });
 
-      console.log("job posted to posts collection successfully");
-
       setjobData({
         title: "",
         description: "",
@@ -57,7 +54,7 @@ const PostAJob = () => {
         questions: [""],
       });
     } catch (error) {
-      console.error("Error posting job:", error);
+      console.error("🔥 Error posting job:", error);
     }
 
     setLoading(false);
@@ -80,67 +77,74 @@ const PostAJob = () => {
   };
 
   return (
-    <div className="p-6 max-w-3xl mx-auto mt-10 bg-white rounded-xl shadow-md">
+    <div className="p-6 sm:p-8 max-w-3xl mx-auto mt-10 bg-cardBg text-textLight rounded-2xl shadow-lg border border-primary animate-fadeIn">
       <Popup showPopUp={showPopUp} setshowPopUp={setshowPopUp} />
       {loading ? (
         <Loader />
       ) : (
         <>
-          {" "}
-          <h1 className="text-3xl font-bold mb-6 text-gray-800">Post a Job</h1>
+          <h1 className="text-4xl font-bold mb-6 text-primary">
+            🚀 Let's Post That Job!
+          </h1>
+
           <form className="flex flex-col gap-4">
             <input
               type="text"
               name="title"
               value={jobData.title}
               onChange={handleChange}
-              placeholder="Job Title"
-              className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="💼 Job Title"
+              className="bg-[#1f2937] border border-primary text-textLight rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-textMuted"
             />
+
             <textarea
-              placeholder="Job Description"
+              placeholder="📝 Job Description"
               value={jobData.description}
               name="description"
               onChange={handleChange}
               rows={5}
-              className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            ></textarea>
+              className="bg-[#1f2937] border border-primary text-textLight rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-textMuted"
+            />
+
             <input
               type="text"
               name="location"
               value={jobData.location}
               onChange={handleChange}
-              placeholder="Location"
-              className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="📍 Location"
+              className="bg-[#1f2937] border border-primary text-textLight rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-textMuted"
             />
+
             <input
               type="text"
               name="company"
               onChange={handleChange}
               value={jobData.company}
-              placeholder="Company Name"
-              className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="🏢 Company Name"
+              className="bg-[#1f2937] border border-primary text-textLight rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-textMuted"
             />
+
             <input
               type="text"
               name="salary"
               onChange={handleChange}
               value={jobData.salary}
-              placeholder="Salary Range"
-              className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="💰 Salary Range"
+              className="bg-[#1f2937] border border-primary text-textLight rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-textMuted"
             />
 
-            <h2 className="text-lg font-semibold text-gray-700 mb-2">
-              Optional Screening Questions
+            <h2 className="text-lg font-semibold mt-4 text-textMuted">
+              🧠 Optional Screening Questions
             </h2>
+
             {jobData.questions.map((question, index) => (
               <input
                 key={index}
                 type="text"
                 value={question}
                 onChange={(e) => handleQuestionChange(index, e.target.value)}
-                placeholder={`Question ${index + 1}`}
-                className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder={`❓ Question ${index + 1}`}
+                className="bg-[#1f2937] border border-gray-600 text-textLight rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-textMuted"
               />
             ))}
 
@@ -148,17 +152,18 @@ const PostAJob = () => {
               <button
                 type="button"
                 onClick={addQuestionField}
-                className="text-blue-600 hover:underline text-sm"
+                className="text-primary hover:underline text-sm mt-1 transition"
               >
-                + Add another question
+                ➕ Add another question
               </button>
             )}
+
             <button
               type="submit"
               onClick={handleSubmit}
-              className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition duration-200"
+              className="bg-primary hover:bg-primary/90 transition duration-200 text-white px-6 py-3 rounded-xl mt-6 font-bold shadow"
             >
-              Submit Job
+              ✨ Submit Job
             </button>
           </form>
         </>

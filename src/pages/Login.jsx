@@ -24,7 +24,7 @@ const Login = () => {
       const user = await login(email, password);
 
       if (!user.emailVerified) {
-        toast.error("Please verify your email before logging in.");
+        toast.error("Bruh... verify your email first 😤");
         setLoading(false);
         return;
       }
@@ -43,7 +43,7 @@ const Login = () => {
         dispatch(setUser(fullUserdata));
       }
 
-      toast.success("Login successful!");
+      toast.success("You're in. Let’s get that 💰");
       navigate("/home");
     } catch (error) {
       console.error("Login error:", error);
@@ -54,30 +54,33 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen  px-4">
+    <div className="flex items-center justify-center min-h-screen bg-[var(--color-bgc)] px-4">
       {loading ? (
         <Loader />
       ) : (
-        <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 border border-indigo-300 transition duration-300">
-          <h2 className="text-3xl font-bold text-center text-indigo-600 mb-6">
-            Welcome Back 👋
+        <div className="w-full max-w-md bg-[var(--color-cardBg)] rounded-2xl shadow-lg p-8 border border-[var(--color-primary)] transition duration-300">
+          <h2 className="text-4xl font-extrabold text-center text-[var(--color-primary)] mb-6 leading-tight">
+            👋 Welcome Back, Legend.
           </h2>
+          <p className="text-center text-[var(--color-textMuted)] text-sm mb-8">
+            Login to unlock the good stuff.
+          </p>
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-[var(--color-textLight)] mb-1">
                 Email
               </label>
               <input
                 type="email"
-                placeholder="you@example.com"
+                placeholder="you@vibemail.com"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                className="w-full px-4 py-2 bg-transparent border border-[var(--color-textMuted)] rounded-md text-[var(--color-textLight)] placeholder-[var(--color-textMuted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-[var(--color-textLight)] mb-1">
                 Password
               </label>
               <input
@@ -86,22 +89,22 @@ const Login = () => {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                className="w-full px-4 py-2 bg-transparent border border-[var(--color-textMuted)] rounded-md text-[var(--color-textLight)] placeholder-[var(--color-textMuted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition"
               />
             </div>
             <button
               type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-md font-semibold text-lg transition duration-200"
+              className="w-full bg-[var(--color-primary)] hover:bg-sky-500 text-[var(--color-bgc)] py-2.5 rounded-md font-bold text-lg transition duration-200"
             >
-              Login
+              Let Me In 🚀
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-gray-600">
-            Don&apos;t have an account?{" "}
+          <p className="mt-6 text-center text-sm text-[var(--color-textMuted)]">
+            Don’t have an account?{" "}
             <a
               href="/signup"
-              className="text-indigo-600 hover:underline font-medium"
+              className="text-[var(--color-primary)] hover:underline font-medium"
             >
               Sign Up
             </a>
