@@ -1,27 +1,18 @@
-⚠️ Known Issue: Bookmark Permissions
-🔐 Firebase Firestore Permission Error
+**4 July 2025 – Progress & Problems**
 
-While implementing the bookmarked jobs feature, an issue was encountered related to Firestore security rules. When fetching saved job data for authenticated users, Firebase throws the following error:
+**What I did:**
 
-makefile
-Copy
-Edit
-FirebaseError: Missing or insufficient permissions.
-This occurs because the current Firestore rules restrict read access to the savedJobs or posts collections. The feature works as expected when permissions are relaxed for development, but stricter production-level rules are currently preventing access for some users.
+* Built Home.jsx with infinite scroll using `useInfiniteQuery` from React Query v5.
+* Fetched paginated job posts from Firebase.
+* Added search functionality.
+* Started building the Delete Account feature.
 
-✅ Bookmarked job data is being correctly stored and retrieved locally via Redux and Firebase.
-❌ However, Firestore denies read access under current security policies.
+**Problems faced:**
 
-This issue will be resolved by updating Firestore rules to securely allow read access for authenticated users to their own saved jobs.
+* Used old React Query syntax (v4), fixed it to v5 format.
+* Tried using `firebase-admin` in frontend, got `process is not defined` error (realized it's backend-only).
+* Learned how to re-authenticate user before account deletion.
 
-Let me know if you'd like a separate section for a solution or development instructions.
+**Next:**
 
-
-
-
-
-
-
-
-
-Ask ChatGPT
+* Complete Delete Account logic with Firebase + Redux cleanup.

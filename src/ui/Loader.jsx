@@ -1,9 +1,11 @@
 import React from "react";
 import "./css/loader.css";
 
-const Loader = () => {
+const Loader = ({ height }) => {
   return (
-    <div className="min-h-[80vh] flex justify-center items-center">
+    <div
+      className={`${height && "min-h-[80vh]"} flex items-center justify-center`}
+    >
       <div className="loader"></div>
     </div>
   );

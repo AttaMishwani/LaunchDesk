@@ -1,41 +1,57 @@
+// src/pages/Home.jsx
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { fetchPosts } from "../api/fetchPosts";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { fetchPostsPage } from "../api/fetchPosts";
 import Loader from "../ui/Loader";
 import Button from "../ui/Button";
 import JobPost from "../components/home/JobPost";
 import { useSavedJobs } from "../api/fetchBookMarkedJobs";
 import { useSelector } from "react-redux";
+import { useInView } from "react-intersection-observer";
 
 const Home = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const { isLoading: isBookMarkLoading } = useSavedJobs(currentUser?.uid);
   const [selectedPost, setselectedPost] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const { ref, inView } = useInView();
 
   const {
     data,
     isLoading: isPostLoading,
     error,
-  } = useQuery({
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
     queryKey: ["posts"],
-    queryFn: fetchPosts,
+    queryFn: fetchPostsPage,
+    getNextPageParam: (lastPage) => lastPage.lastVisible || undefined,
   });
 
   useEffect(() => {
-    if (data && data.length > 0 && selectedPost === null) {
-      setselectedPost(data[0]);
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
+
+  useEffect(() => {
+    const all = data?.pages.flatMap((page) => page.posts) || [];
+    if (all.length > 0 && selectedPost === null) {
+      setselectedPost(all[0]);
     }
   }, [data, selectedPost]);
 
-  const filteredPosts = data?.filter(
+  const allPosts = data?.pages.flatMap((page) => page.posts) || [];
+
+  const filteredPosts = allPosts.filter(
     (post) =>
       post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       post.company.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (isPostLoading || isBookMarkLoading) return <Loader />;
+  if (isPostLoading || isBookMarkLoading) return <Loader height={true} />;
   if (error) return <div>Error loading posts</div>;
 
   return (
@@ -72,12 +88,16 @@ const Home = () => {
               />
             ))
           )}
+
+          {/* Infinite scroll loader */}
+          <div ref={ref} className="h-10"></div>
+          {isFetchingNextPage && <Loader height={false} />}
         </div>
 
         {/* Sticky Job Details */}
         <div className="w-full md:w-[500px]">
           {selectedPost && (
-            <div className="sticky top-28">
+            <div className="sticky top-10">
               <div className="p-6 rounded-2xl bg-cardBg shadow-lg border-2 border-primary space-y-5 animate-fadeIn">
                 <h2 className="text-3xl font-extrabold text-textLight flex items-center gap-2">
                   {selectedPost.title} <span className="text-primary">🔥</span>
