@@ -13,6 +13,7 @@ const Home = () => {
   const { isLoading: isBookMarkLoading } = useSavedJobs(currentUser?.uid);
   const [selectedPost, setselectedPost] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+
   const {
     data,
     isLoading: isPostLoading,
@@ -38,40 +39,45 @@ const Home = () => {
   if (error) return <div>Error loading posts</div>;
 
   return (
-    <>
-      <div className="flex flex-col bg-bgc items-center pt-[3rem] px-4">
-        <div className="w-full max-w-[600px] mb-8">
+    <div className="bg-bgc min-h-screen pt-20 px-4">
+      {/* Search & Title */}
+      <div className="flex flex-col items-center mb-10">
+        <div className="w-full max-w-[600px] mb-6">
           <input
             type="text"
             placeholder="🔍 Search jobs... titles, vibes, and more"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-5 py-3 rounded-xl bg-[#1F2937]/70 backdrop-blur-md text-textLight border border-primary placeholder:text-textMuted focus:outline-none focus:ring-3 focus:ring-sky-500 transition-all duration-300 shadow-md hover:shadow-xl"
+            className="w-full px-5 py-3 rounded-xl bg-[#1F2937]/70 backdrop-blur-md text-textLight border border-primary placeholder:text-textMuted focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-300 shadow-md hover:shadow-xl"
           />
         </div>
-        <h1 className="text-5xl font-bold text-center mb-8 text-white">
+
+        <h1 className="text-4xl md:text-5xl font-bold text-center text-textLight">
           🚀 Land Your Dream Job Today!
         </h1>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-[1100px]">
-          {/* Job List */}
-          <div className="space-y-6">
-            {filteredPosts.length === 0 ? (
-              <p className="text-textMuted text-center">No jobs found 🔍</p>
-            ) : (
-              filteredPosts.map((post) => (
-                <JobPost
-                  key={post.id}
-                  post={post}
-                  setselectedPost={setselectedPost}
-                />
-              ))
-            )}
-          </div>
+      {/* Job List & Details */}
+      <div className="flex flex-col-reverse md:flex-row gap-10 max-w-[1200px] mx-auto">
+        {/* Job List */}
+        <div className="flex-1 space-y-6">
+          {filteredPosts.length === 0 ? (
+            <p className="text-textMuted text-center">No jobs found 🔍</p>
+          ) : (
+            filteredPosts.map((post) => (
+              <JobPost
+                key={post.id}
+                post={post}
+                setselectedPost={setselectedPost}
+              />
+            ))
+          )}
+        </div>
 
-          {/* Job Details */}
-          <div className="post-details w-full md:sticky md:top-[7rem]">
-            {selectedPost && (
+        {/* Sticky Job Details */}
+        <div className="w-full md:w-[500px]">
+          {selectedPost && (
+            <div className="sticky top-28">
               <div className="p-6 rounded-2xl bg-cardBg shadow-lg border-2 border-primary space-y-5 animate-fadeIn">
                 <h2 className="text-3xl font-extrabold text-textLight flex items-center gap-2">
                   {selectedPost.title} <span className="text-primary">🔥</span>
@@ -100,11 +106,11 @@ const Home = () => {
                   <Button buttonText="Apply Now 🚀" />
                 </Link>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
