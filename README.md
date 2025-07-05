@@ -1,107 +1,131 @@
-# 💼 FreelancerBox
+💼 LaunchDesk
+Empowering job seekers and recruiters with tools to connect, hire, and grow — all in one place.
 
-> Empowering freelancers and recruiters with tools to connect, hire, and grow — all in one place.
+🚀 Live Demo
+🔗 View on GitHub Pages
 
-![FreelancerBox Screenshot](https://your-screenshot-link-if-available)
+📌 Overview
+LaunchDesk is a full-featured React web application that bridges the gap between recruiters and job seekers through a modern, role-based hiring platform.
 
----
+Recruiters can post jobs, manage listings, and review applicants.
 
-## 🚀 Live Demo
-
-🔗 [View on GitHub Pages](https://attamishwani.github.io/freelancerbox/)
-
----
-
-## 📌 Overview
-
-**FreelancerBox** is a full-featured React web application built for two types of users:
-
-- **Recruiters** can post jobs and manage applicants.
-- **Freelancers** can apply to jobs, manage their profiles, and upload resumes.
+Job Seekers can apply to jobs, manage their profiles, and upload resumes.
 
 This project was built with a focus on:
 
-- Clean, scalable frontend architecture using **React.js + Redux Toolkit**
-- Real-time data using **Firebase Firestore & Authentication**
-- **Role-based UI rendering**, user persistence, and protected routes
-- A strong emphasis on code readability and reusability
+Scalable and clean architecture using React.js + Redux Toolkit
 
----
+Real-time capabilities using Firebase Firestore & Authentication
 
-## 🧠 Features
+Role-based UI, user persistence, and route protection
 
-### 🔐 Authentication
+Reusable components and developer-friendly code organization
 
-- Signup with email & password
-- Email verification required before login
-- Login/logout functionality
-- Persistent login using **redux-persist**
+🧠 Features
+🔐 Authentication
+Signup with email & password
 
-### 👤 User Roles
+Email verification required before login
 
-- Role selected during signup: `Recruiter` or `JobSeeker`
-- Role-based profile components (Post a Job, Apply to Jobs, etc.)
+Secure login/logout
 
-### 🧾 Recruiter Functionality
+Persistent login with redux-persist
 
-- Create and post new jobs
-- View applicants for posted jobs
-- Manage job listings in their profile
+👥 User Roles
+Choose a role during signup: Recruiter or JobSeeker
 
-### 👨‍💻 Job Seeker Functionality
+Role-based dashboard & profile screens
 
-- Apply to job listings
-- Upload resume (PDF, DOC, DOCX)
-- View jobs they’ve applied to
-- Edit personal details and bio
+Conditional rendering based on role type
 
-### 💾 Persistence
+🧾 Recruiter Functionality
+Post new job listings
 
-- Redux state is persisted to local storage using **redux-persist**
-- Firebase stores user data, resumes, and job postings
+View and manage posted jobs
 
-### ⚙️ Tech Stack
+Track job application data (future scope)
 
-| Frontend | State                         | Backend (BaaS)                             | Styling      |
-| -------- | ----------------------------- | ------------------------------------------ | ------------ |
-| React.js | Redux Toolkit + redux-persist | Firebase Auth, Firestore, Firebase Storage | Tailwind CSS |
+💼 Job Seeker Functionality
+Browse and search job listings
 
----
+Apply to jobs and upload resume (PDF, DOC, DOCX)
 
-## 🧰 Tools & Libraries
+View jobs they've applied to
 
-- `React Router DOM` – Routing and navigation
-- `Redux Toolkit` – Global state management
-- `redux-persist` – State persistence on refresh
-- `@tanstack/react-query` – Data fetching and caching
-- `Firebase` – Auth, Firestore DB, and File Storage
-- `React Toastify` – Elegant toast notifications
-- `Tailwind CSS` – Clean utility-first styling
+Edit profile information (skills, bio, social links)
 
----
+💾 Data Persistence
+App state saved across refresh with redux-persist
 
-## 📸 Screenshots
+Firebase stores all user data, job posts, and resumes
 
-| Login Page                             | Profile View                             | Job Details                                 |
-| -------------------------------------- | ---------------------------------------- | ------------------------------------------- |
-| ![Login](https://your-screenshot-link) | ![Profile](https://your-screenshot-link) | ![JobDetails](https://your-screenshot-link) |
+⚙️ Tech Stack
+Frontend State Backend (BaaS) Styling
+React.js Redux Toolkit + redux-persist Firebase Auth, Firestore, Firebase Storage Tailwind CSS
 
----
+🧰 Tools & Libraries
+React Router DOM – Routing and navigation
 
-## ⚙️ How to Run Locally
+Redux Toolkit – Global state management
 
-```bash
+redux-persist – Local state persistence
+
+@tanstack/react-query – Data fetching & caching
+
+Firebase – Auth, Firestore DB, File Storage
+
+React Toastify – Clean toast alerts
+
+Tailwind CSS – Modern utility-first styling
+
+📸 Screenshots
+Login Page Profile View Job Details
+
+💡 What I Learned
+While building LaunchDesk, I learned to:
+
+Structure large React apps using feature-based architecture
+
+Use Redux Toolkit effectively for scalable state management
+
+Implement role-based conditional rendering in React
+
+Set up and manage Firebase Authentication, Firestore, and Storage
+
+Handle file uploads and generate secure download links via Firebase
+
+Use react-query for efficient server state management
+
+Improve UX with clean UI, form validation, and responsive design
+
+🧱 Challenges I Faced & How I Solved Them
+Challenge How I Solved It
+Email verification blocking login Added conditional logic to check user.emailVerified and alert the user if not verified
+Managing role-based rendering Created centralized logic to render different components based on user role (JobSeeker vs Recruiter)
+Resume uploads with Firebase Storage Learned how to upload files using uploadBytes and fetch download URLs via getDownloadURL
+Persistent Redux state Integrated redux-persist to store user data even on refresh
+Protecting routes Used Firebase auth and Redux state to conditionally allow/deny access
+Filtering & searching jobs Implemented search input and dynamic filtering using useState and Array.filter()
+Sticky job details box Used sticky + responsive breakpoints to keep selected job details visible while scrolling
+
+⚙️ How to Run Locally
+bash
+Copy
+Edit
+
 # 1. Clone the repo
+
 git clone https://github.com/your-username/freelancerbox.git
 cd freelancerbox
 
 # 2. Install dependencies
+
 npm install
 
 # 3. Set up Firebase
-# Replace config in /firebase/firebase.js with your own Firebase project credentials
 
-# 4. Start the dev server
+# Replace the config in /firebase/firebase.js with your Firebase project credentials
+
+# 4. Start the development server
+
 npm run dev
-
-```
