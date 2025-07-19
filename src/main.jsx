@@ -19,7 +19,7 @@ createRoot(document.getElementById("root")).render(
         <PersistGate loading={null} persistor={persistor}>
           <BrowserRouter
             basename={
-              import.meta.env.MODE === "production" ? "/freelancerbox" : "/"
+              import.meta.env.MODE === "production" ? "/launchdesk" : "/"
             }
           >
             <App />
