@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeMenu, toggleMenu } from "../redux/menuSlice";
 import { FaBookmark } from "react-icons/fa";
 import { FaUserAlt } from "react-icons/fa";
+import { setSavedJobs } from "../redux/bookMarkedJobsSlice";
 
 const Navbar = () => {
   const { showMenu } = useSelector((state) => state.menu);
@@ -32,6 +33,7 @@ const Navbar = () => {
 
   const handleLogOut = async () => {
     await logout();
+    dispatch(setSavedJobs([]));
     persistor.purge();
     navigate("/login");
   };

@@ -1,9 +1,9 @@
 {
-  "name": "freelancer-box",
+  "name": "launchdesk",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://github.com/AttaMishwani/freelancerbox",
+  "homepage": "https://github.com/AttaMishwani/LaunchDesk",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

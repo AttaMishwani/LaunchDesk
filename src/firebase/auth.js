@@ -9,6 +9,7 @@ import {
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "./firebase";
 
+
 // ✅ Sign Up
 export const signUp = async (email, password, type) => {
     try {
@@ -31,6 +32,7 @@ export const signUp = async (email, password, type) => {
 
 // ✅ Login
 export const login = async (email, password) => {
+
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         return userCredential.user;
@@ -41,6 +43,8 @@ export const login = async (email, password) => {
 
 // ✅ Logout
 export const logout = async () => {
+
+
     try {
         await signOut(auth);
     } catch (error) {

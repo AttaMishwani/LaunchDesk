@@ -1,4 +1,4 @@
-import { auth } from "../../firebase/firebase";
+import { auth, db } from "../../firebase/firebase";
 import {
   deleteUser,
   EmailAuthProvider,

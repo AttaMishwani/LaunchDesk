@@ -1,3 +1,4 @@
+// components/home/JobPost.jsx
 import React from "react";
 import { FaRegBookmark, FaBookmark } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,7 +33,7 @@ const JobPost = ({ post, setselectedPost }) => {
 
     if (isSaved) {
       dispatch(removeSavedJob(jobId));
-      toast.success("Removed from your vibe list 💔");
+      toast.success("Removed from bookmarks 💔");
       const q = query(
         collection(db, "savedJobs"),
         where("userId", "==", currentUser.uid),
@@ -44,42 +45,33 @@ const JobPost = ({ post, setselectedPost }) => {
       }
     } else {
       dispatch(addSavedJob(jobId));
-      toast.success("Job saved 🔖 Let's go!");
+      toast.success("Job bookmarked 🔖");
       await bookMarkAJob(currentUser.uid, jobId);
     }
   };
 
   return (
     <div
-      key={post.id}
-      onClick={() => setselectedPost(post)}
-      className="post-card relative bg-cardBg text-textLight p-6 rounded-2xl border-2 border-transparent hover:border-primary hover:shadow-xl cursor-pointer transition-all duration-300 ease-in-out group"
+      onClick={() => setselectedPost?.(post)}
+      className="relative bg-cardBg p-6 rounded-2xl border hover:border-primary shadow transition cursor-pointer"
     >
-      {/* Bookmark Icon */}
       {isSaved ? (
         <FaBookmark
           onClick={handleSaveJob}
-          className="absolute top-4 right-4 text-2xl text-primary hover:scale-125 transition-transform"
+          className="absolute top-4 right-4 text-2xl text-primary"
         />
       ) : (
         <FaRegBookmark
           onClick={handleSaveJob}
-          className="absolute top-4 right-4 text-2xl text-primary hover:scale-125 transition-transform"
+          className="absolute top-4 right-4 text-2xl text-primary"
         />
       )}
 
-      {/* Title */}
-      <h3 className="text-2xl font-bold mb-2 group-hover:text-primary">
-        {post.title}
-      </h3>
-
-      {/* Description */}
+      <h3 className="text-2xl font-bold text-primary mb-2">{post.title}</h3>
       <p className="text-textMuted mb-4 line-clamp-3">{post.description}</p>
-
-      {/* Salary */}
       <div className="flex justify-between items-center">
-        <p className="font-semibold text-lg text-sky-400">💰 {post.salary}</p>
-        <span className="text-sm bg-primary text-white px-3 py-1 rounded-full shadow hover:scale-105 transition-transform">
+        <p className="font-semibold text-lg text-primary">💰 {post.salary}</p>
+        <span className="text-sm bg-primary text-white px-3 py-1 rounded-full">
           Apply Now
         </span>
       </div>

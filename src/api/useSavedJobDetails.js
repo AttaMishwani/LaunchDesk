@@ -1,39 +1,31 @@
-import { useQuery } from "@tanstack/react-query"
-import { doc, getDoc } from "firebase/firestore";
+// api/useSavedJobDetails.js
+import { useQuery } from "@tanstack/react-query";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 
+const fetchSavedJobsByUserId = async (userId) => {
+    const savedQuery = query(
+        collection(db, "savedJobs"),
+        where("userId", "==", userId)
+    );
+    const savedSnap = await getDocs(savedQuery);
+    const jobIds = savedSnap.docs.map((doc) => doc.data().jobId);
 
-const fetchSavedJobsByIds = async (savedJobIds) => {
-    if (!savedJobIds || savedJobIds.length === 0) {
-        return [];
-    }
+    const jobs = await Promise.all(
+        jobIds.map(async (jobId) => {
+            const docRef = doc(db, "posts", jobId);
+            const docSnap = await getDoc(docRef);
+            return docSnap.exists() ? { id: docSnap.id, ...docSnap.data() } : null;
+        })
+    );
 
-    try {
-        const jobs = await Promise.all(
-            savedJobIds.map(async (jobId) => {
-                const docRef = doc(db, "posts", jobId);
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    return { id: docSnap.id, ...docSnap.data() };
-                } else {
-                    return null;
-                }
-            })
-        );
+    return jobs.filter(Boolean);
+};
 
-        const filteredJobs = jobs.filter((job) => job !== null);
-
-        return filteredJobs;
-    } catch (error) {
-        console.error("Failed to fetch saved job details:", error);
-    }
-}
-
-export const useSavedJobDetails = (savedJobIds) => {
+export const useSavedJobDetails = (userUid) => {
     return useQuery({
-        queryKey: ["savedJobs", savedJobIds],
-        queryFn: () => fetchSavedJobsByIds(savedJobIds),
-        enabled: savedJobIds.length > 0,
-        staleTime: 1000 * 60 * 5
-    })
-} 
+        queryKey: ["savedJobs", userUid],
+        queryFn: () => fetchSavedJobsByUserId(userUid),
+        enabled: !!userUid,
+    });
+};

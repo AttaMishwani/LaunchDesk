@@ -7,12 +7,16 @@ import Loader from "../ui/Loader";
 import Button from "../ui/Button";
 import JobPost from "../components/home/JobPost";
 import { useSavedJobs } from "../api/fetchBookMarkedJobs";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useInView } from "react-intersection-observer";
+import { setSavedJobs } from "../redux/bookMarkedJobsSlice";
 
 const Home = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
-  const { isLoading: isBookMarkLoading } = useSavedJobs(currentUser?.uid);
+  const { data: savedJobsIds, isLoading: isBookMarkLoading } = useSavedJobs(
+    currentUser?.uid
+  );
+  const dispatch = useDispatch();
   const [selectedPost, setselectedPost] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const { ref, inView } = useInView();
@@ -29,6 +33,12 @@ const Home = () => {
     queryFn: fetchPostsPage,
     getNextPageParam: (lastPage) => lastPage.lastVisible || undefined,
   });
+
+  useEffect(() => {
+    if (!isBookMarkLoading && savedJobsIds) {
+      dispatch(setSavedJobs(savedJobsIds || []));
+    }
+  }, [isBookMarkLoading, savedJobsIds, dispatch]);
 
   useEffect(() => {
     if (inView && hasNextPage) {

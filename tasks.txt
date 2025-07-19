@@ -1,18 +1,1 @@
-**4 July 2025 – Progress & Problems**
-
-**What I did:**
-
-* Built Home.jsx with infinite scroll using `useInfiniteQuery` from React Query v5.
-* Fetched paginated job posts from Firebase.
-* Added search functionality.
-* Started building the Delete Account feature.
-
-**Problems faced:**
-
-* Used old React Query syntax (v4), fixed it to v5 format.
-* Tried using `firebase-admin` in frontend, got `process is not defined` error (realized it's backend-only).
-* Learned how to re-authenticate user before account deletion.
-
-**Next:**
-
-* Complete Delete Account logic with Firebase + Redux cleanup.
+add job  filter functionality

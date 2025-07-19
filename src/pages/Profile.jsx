@@ -13,6 +13,7 @@ import { db } from "../firebase/firebase";
 import JobsPosted from "../components/Profile/JobsPosted";
 import JobsApplied from "../components/Profile/JobsApplied";
 import { persistor } from "../redux/store";
+import { setSavedJobs } from "../redux/bookMarkedJobsSlice";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -52,6 +53,7 @@ const Profile = () => {
 
   const handleLogout = async () => {
     await logout();
+    dispatch(setSavedJobs([]));
     persistor.purge();
     dispatch(closeMenu());
     navigate("/login");
