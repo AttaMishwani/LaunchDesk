@@ -133,6 +133,92 @@ const PostAJob = () => {
               className="bg-[#1f2937] border border-primary text-textLight rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-textMuted"
             />
 
+            <label
+              htmlFor="category"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Category
+            </label>
+            <select
+              id="category"
+              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+            >
+              <option className="text-black" value="">
+                All Categories
+              </option>
+              <option className="text-black" value="design">
+                Design
+              </option>
+              <option className="text-black" value="marketing">
+                Marketing
+              </option>
+              <option className="text-black" value="development">
+                Development
+              </option>
+              <option className="text-black" value="writing">
+                Writing
+              </option>
+              <option className="text-black" value="sales">
+                Sales
+              </option>
+              <option className="text-black" value="support">
+                Customer Support
+              </option>
+              <option className="text-black" value="finance">
+                Finance
+              </option>
+            </select>
+
+            <label
+              htmlFor="jobType"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Job Type
+            </label>
+            <select
+              id="jobType"
+              className="w-full p-2 border border-gray-300 text-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option className="text-black" value="">
+                All Types
+              </option>
+              <option className="text-black" value="full-time">
+                Full-time
+              </option>
+              <option className="text-black" value="part-time">
+                Part-time
+              </option>
+              <option className="text-black" value="contract">
+                Contract
+              </option>
+              <option className="text-black" value="internship">
+                Internship
+              </option>
+              <option className="text-black" value="temporary">
+                Temporary
+              </option>
+              <option className="text-black" value="freelance">
+                Freelance
+              </option>
+            </select>
+
+            <label
+              htmlFor="experienceLevel"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Experience Level
+            </label>
+            <select
+              id="experienceLevel"
+              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">All Levels</option>
+              <option value="entry">Entry Level</option>
+              <option value="mid">Mid Level</option>
+              <option value="senior">Senior Level</option>
+              <option value="expert">Expert</option>
+            </select>
+
             <h2 className="text-lg font-semibold mt-4 text-textMuted">
               🧠 Optional Screening Questions
             </h2>
