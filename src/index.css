@@ -22,6 +22,30 @@ body {
     display: none;
 }
 
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgb(38, 37, 37);
+    /* Light gray background */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #38bdf8;
+    /* Tailwind sky-400 or your primary color */
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+/* Firefox support */
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #38bdf8 rgb(38, 37, 37);
+}
+
 @media (max-width:1024px) {
     .webMenu {
         display: none;

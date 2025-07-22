@@ -15,6 +15,9 @@ const PostAJob = () => {
     location: "",
     company: "",
     salary: "",
+    experienceLevel: "",
+    jobType: "",
+    category: "",
     questions: [""],
   });
 
@@ -26,16 +29,58 @@ const PostAJob = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { title, description, location, company, salary } = jobData;
-    if (!title || !description || !location || !company || !salary) {
+    // Trim all string fields to handle whitespace-only inputs
+    const trimmedJobData = {
+      title: jobData.title.trim(),
+      description: jobData.description.trim(),
+      location: jobData.location.trim(),
+      company: jobData.company.trim(),
+      salary: jobData.salary.trim(),
+      category: jobData.category.trim(),
+      experienceLevel: jobData.experienceLevel.trim(),
+      jobType: jobData.jobType.trim(),
+      questions: jobData.questions,
+    };
+
+    const {
+      title,
+      description,
+      location,
+      company,
+      salary,
+      experienceLevel,
+      jobType,
+      category,
+      questions,
+    } = trimmedJobData;
+
+    if (
+      !title ||
+      !description ||
+      !location ||
+      !company ||
+      !salary ||
+      !experienceLevel ||
+      !jobType ||
+      !category
+    ) {
       alert("Yo! Fill in all the fields first 😤");
       return;
     }
 
     setLoading(true);
     try {
-      await addDoc(collection(db, "posts"), {
-        ...jobData,
+      // Explicitly construct the document object instead of spreading jobData
+      const jobDocument = {
+        title,
+        description,
+        location,
+        company,
+        salary,
+        experienceLevel,
+        jobType,
+        category,
+        questions: questions.filter((q) => q.trim() !== ""),
         createdAt: serverTimestamp(),
         ownerId: currentUser.uid,
         postedBy: {
@@ -43,7 +88,9 @@ const PostAJob = () => {
           email: currentUser.email,
           name: currentUser.username,
         },
-      });
+      };
+
+      await addDoc(collection(db, "posts"), jobDocument);
 
       setjobData({
         title: "",
@@ -51,10 +98,14 @@ const PostAJob = () => {
         location: "",
         company: "",
         salary: "",
+        experienceLevel: "",
+        jobType: "",
+        category: "",
         questions: [""],
       });
     } catch (error) {
       console.error("🔥 Error posting job:", error);
+      alert("Failed to post job. Please try again.");
     }
 
     setLoading(false);
@@ -73,6 +124,114 @@ const PostAJob = () => {
         ...prev,
         questions: [...prev.questions, ""],
       }));
+    }
+  };
+
+  const categories = [
+    {
+      categoryName: "All",
+      categoryValue: "all",
+    },
+    {
+      categoryName: "Web Development",
+      categoryValue: "web-development",
+    },
+    {
+      categoryName: "Data Science",
+      categoryValue: "data-science",
+    },
+    {
+      categoryName: "Graphic Design",
+      categoryValue: "graphic-design",
+    },
+    {
+      categoryName: "Content Writing",
+      categoryValue: "content-writing",
+    },
+    {
+      categoryName: "Digital Marketing",
+      categoryValue: "digital-marketing",
+    },
+    {
+      categoryName: "Cyber Security",
+      categoryValue: "cyber-security",
+    },
+    {
+      categoryName: "Marketing",
+      categoryValue: "marketing",
+    },
+    {
+      categoryName: "Finance",
+      categoryValue: "finance",
+    },
+    {
+      categoryName: "Engineering",
+      categoryValue: "engineering",
+    },
+    {
+      categoryName: "Healthcare",
+      categoryValue: "healthcare",
+    },
+    {
+      categoryName: "Education",
+      categoryValue: "education",
+    },
+    {
+      categoryName: "Sales",
+      categoryValue: "sales",
+    },
+    {
+      categoryName: "Customer Service",
+      categoryValue: "customer-service",
+    },
+    {
+      categoryName: "Human Resources",
+      categoryValue: "human-resources",
+    },
+    {
+      categoryName: "IT Support",
+      categoryValue: "it-support",
+    },
+    {
+      categoryName: "Project Management",
+      categoryValue: "project-management",
+    },
+    {
+      categoryName: "Consulting",
+      categoryValue: "consulting",
+    },
+    {
+      categoryName: "Legal",
+      categoryValue: "legal",
+    },
+    {
+      categoryName: "Administrative",
+      categoryValue: "administrative",
+    },
+  ];
+
+  const jobTypes = [
+    { typeName: "All Types", typeValue: "all" },
+    { typeName: "Full-time", typeValue: "full-time" },
+    { typeName: "Part-time", typeValue: "part-time" },
+    { typeName: "Contract", typeValue: "contract" },
+    { typeName: "Internship", typeValue: "internship" },
+    { typeName: "Temporary", typeValue: "temporary" },
+    { typeName: "Freelance", typeValue: "freelance" },
+  ];
+
+  const experienceLevels = [
+    { levelName: "All Levels", levelValue: "all" },
+    { levelName: "Entry Level", levelValue: "entry" },
+    { levelName: "Mid Level", levelValue: "mid" },
+    { levelName: "Senior Level", levelValue: "senior" },
+    { levelName: "Expert", levelValue: "expert" },
+  ];
+
+  const removeQuestionField = (index) => {
+    if (jobData.questions.length > 1) {
+      const updatedQuestions = jobData.questions.filter((_, i) => i !== index);
+      setjobData((prev) => ({ ...prev, questions: updatedQuestions }));
     }
   };
 
@@ -133,90 +292,70 @@ const PostAJob = () => {
               className="bg-[#1f2937] border border-primary text-textLight rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-textMuted"
             />
 
+            {/* category */}
             <label
               htmlFor="category"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-textLight mb-1"
             >
-              Category
+              📁 Category
             </label>
             <select
+              onChange={handleChange}
+              value={jobData.category}
+              name="category"
               id="category"
-              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+              className="bg-[#1f2937] border border-primary text-textLight rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
             >
-              <option className="text-black" value="">
-                All Categories
-              </option>
-              <option className="text-black" value="design">
-                Design
-              </option>
-              <option className="text-black" value="marketing">
-                Marketing
-              </option>
-              <option className="text-black" value="development">
-                Development
-              </option>
-              <option className="text-black" value="writing">
-                Writing
-              </option>
-              <option className="text-black" value="sales">
-                Sales
-              </option>
-              <option className="text-black" value="support">
-                Customer Support
-              </option>
-              <option className="text-black" value="finance">
-                Finance
-              </option>
+              {categories.map((category) => (
+                <option
+                  key={category.categoryValue}
+                  value={category.categoryValue}
+                >
+                  {category.categoryName}
+                </option>
+              ))}
             </select>
 
+            {/* jobType */}
             <label
               htmlFor="jobType"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-textLight mb-1"
             >
-              Job Type
+              💼 Job Type
             </label>
             <select
               id="jobType"
-              className="w-full p-2 border border-gray-300 text-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onChange={handleChange}
+              name="jobType"
+              value={jobData.jobType}
+              className="bg-[#1f2937] border border-primary text-textLight rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
             >
-              <option className="text-black" value="">
-                All Types
-              </option>
-              <option className="text-black" value="full-time">
-                Full-time
-              </option>
-              <option className="text-black" value="part-time">
-                Part-time
-              </option>
-              <option className="text-black" value="contract">
-                Contract
-              </option>
-              <option className="text-black" value="internship">
-                Internship
-              </option>
-              <option className="text-black" value="temporary">
-                Temporary
-              </option>
-              <option className="text-black" value="freelance">
-                Freelance
-              </option>
+              {jobTypes.map((type) => (
+                <option key={type.typeValue} value={type.typeValue}>
+                  {type.typeName}
+                </option>
+              ))}
             </select>
 
+            {/* experienceLevel */}
             <label
               htmlFor="experienceLevel"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-textLight mb-1"
             >
-              Experience Level
+              📈 Experience Level
             </label>
             <select
               id="experienceLevel"
-              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="experienceLevel"
+              onChange={handleChange}
+              value={jobData.experienceLevel}
+              className="bg-[#1f2937] border border-primary text-textLight rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
             >
-              <option value="">All Levels</option>
-              <option value="entry">Entry Level</option>
-              <option value="mid">Mid Level</option>
-              <option value="senior">Senior Level</option>
-              <option value="expert">Expert</option>
+              {experienceLevels.map((level) => (
+                <option key={level.levelValue} value={level.levelValue}>
+                  {level.levelName}
+                </option>
+              ))}
             </select>
 
             <h2 className="text-lg font-semibold mt-4 text-textMuted">
@@ -224,14 +363,25 @@ const PostAJob = () => {
             </h2>
 
             {jobData.questions.map((question, index) => (
-              <input
-                key={index}
-                type="text"
-                value={question}
-                onChange={(e) => handleQuestionChange(index, e.target.value)}
-                placeholder={`❓ Question ${index + 1}`}
-                className="bg-[#1f2937] border border-gray-600 text-textLight rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-textMuted"
-              />
+              <div key={index} className="flex gap-2 items-center">
+                <input
+                  type="text"
+                  value={question}
+                  onChange={(e) => handleQuestionChange(index, e.target.value)}
+                  placeholder={`❓ Question ${index + 1}`}
+                  className="flex-1 bg-[#1f2937] border border-gray-600 text-textLight rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-textMuted"
+                />
+                {jobData.questions.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeQuestionField(index)}
+                    className="text-red-400 hover:text-red-300 p-2 transition"
+                    title="Remove question"
+                  >
+                    🗑️
+                  </button>
+                )}
+              </div>
             ))}
 
             {jobData.questions.length < 5 && (
@@ -247,9 +397,10 @@ const PostAJob = () => {
             <button
               type="submit"
               onClick={handleSubmit}
-              className="bg-primary hover:bg-primary/90 transition duration-200 text-white px-6 py-3 rounded-xl mt-6 font-bold shadow"
+              disabled={loading}
+              className="bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200 text-white px-6 py-3 rounded-xl mt-6 font-bold shadow"
             >
-              ✨ Submit Job
+              {loading ? "⏳ Posting..." : "✨ Submit Job"}
             </button>
           </form>
         </>

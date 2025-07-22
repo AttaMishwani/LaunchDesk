@@ -1,15 +1,15 @@
 // src/pages/Home.jsx
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchPostsPage } from "../api/fetchPosts";
 import Loader from "../ui/Loader";
-import Button from "../ui/Button";
 import JobPost from "../components/home/JobPost";
 import { useSavedJobs } from "../api/fetchBookMarkedJobs";
 import { useDispatch, useSelector } from "react-redux";
 import { useInView } from "react-intersection-observer";
 import { setSavedJobs } from "../redux/bookMarkedJobsSlice";
+import SelectedJob from "../components/home/SelectedJob";
+import HomeSearchBar from "../components/home/HomeSearchBar";
 
 const Home = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -20,7 +20,8 @@ const Home = () => {
   const [selectedPost, setselectedPost] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const { ref, inView } = useInView();
-
+  const [sortOptions, setsortOptions] = useState("newest");
+  const [sortCategory, setSortCategory] = useState("all");
   const {
     data,
     isLoading: isPostLoading,
@@ -55,32 +56,155 @@ const Home = () => {
 
   const allPosts = data?.pages.flatMap((page) => page.posts) || [];
 
-  const filteredPosts = allPosts.filter(
-    (post) =>
+  const filteredPosts = allPosts.filter((post) => {
+    const matchesSearch =
       post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.company.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+      post.company.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesCategory =
+      sortCategory === "all" || post.category === sortCategory;
+
+    return matchesCategory && matchesSearch;
+  });
+
+  const sortedOptions = [...filteredPosts].sort((a, b) => {
+    if (sortOptions === "newest") {
+      return b.createdAt - a.createdAt;
+    } else if (sortOptions === "oldest") {
+      return a.createdAt - b.createdAt;
+    } else {
+      return 0;
+    }
+  });
 
   if (isPostLoading || isBookMarkLoading) return <Loader height={true} />;
   if (error) return <div>Error loading posts</div>;
+
+  const categories = [
+    {
+      categoryName: "All",
+      categoryValue: "all",
+    },
+    {
+      categoryName: "Web Development",
+      categoryValue: "web-development",
+    },
+    {
+      categoryName: "Data Science",
+      categoryValue: "data-science",
+    },
+    {
+      categoryName: "Graphic Design",
+      categoryValue: "graphic-design",
+    },
+    {
+      categoryName: "Content Writing",
+      categoryValue: "content-writing",
+    },
+    {
+      categoryName: "Digital Marketing",
+      categoryValue: "digital-marketing",
+    },
+    {
+      categoryName: "Cyber Security",
+      categoryValue: "cyber-security",
+    },
+    {
+      categoryName: "Marketing",
+      categoryValue: "marketing",
+    },
+    {
+      categoryName: "Finance",
+      categoryValue: "finance",
+    },
+    {
+      categoryName: "Engineering",
+      categoryValue: "engineering",
+    },
+    {
+      categoryName: "Healthcare",
+      categoryValue: "healthcare",
+    },
+    {
+      categoryName: "Education",
+      categoryValue: "education",
+    },
+    {
+      categoryName: "Sales",
+      categoryValue: "sales",
+    },
+    {
+      categoryName: "Customer Service",
+      categoryValue: "customer-service",
+    },
+    {
+      categoryName: "Human Resources",
+      categoryValue: "human-resources",
+    },
+    {
+      categoryName: "IT Support",
+      categoryValue: "it-support",
+    },
+    {
+      categoryName: "Project Management",
+      categoryValue: "project-management",
+    },
+    {
+      categoryName: "Consulting",
+      categoryValue: "consulting",
+    },
+    {
+      categoryName: "Legal",
+      categoryValue: "legal",
+    },
+    {
+      categoryName: "Administrative",
+      categoryValue: "administrative",
+    },
+  ];
 
   return (
     <div className="bg-bgc min-h-screen pt-20 px-4">
       {/* Search & Title */}
       <div className="flex flex-col items-center mb-10">
-        <div className="w-full max-w-[600px] mb-6">
-          <input
-            type="text"
-            placeholder="🔍 Search jobs... titles, vibes, and more"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-5 py-3 rounded-xl bg-[#1F2937]/70 backdrop-blur-md text-textLight border border-primary placeholder:text-textMuted focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-300 shadow-md hover:shadow-xl"
-          />
-        </div>
+        <HomeSearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-        <h1 className="text-4xl md:text-5xl font-bold text-center text-textLight">
-          🚀 Land Your Dream Job Today!
-        </h1>
+        <div className="filters flex items-center">
+          {" "}
+          <div className="mt-4">
+            <select
+              name=""
+              className="bg-cardBg text-textLight border border-textMuted rounded px-4 py-2"
+              value={sortOptions}
+              onChange={(e) => setsortOptions(e.target.value)}
+              id=""
+            >
+              <option value="newest">Sort by: Newest</option>
+              <option value="oldest">Oldest</option>
+            </select>
+          </div>
+          <div className="mt-4">
+            <label htmlFor="category-select" className="text-textLight">
+              Category:
+            </label>
+            <select
+              name="category"
+              value={sortCategory}
+              onChange={(e) => setSortCategory(e.target.value)}
+              className="bg-cardBg text-textLight border border-textMuted rounded px-4 py-2"
+              id="category-select"
+            >
+              {categories.map((category) => (
+                <option
+                  key={category.categoryValue}
+                  value={category.categoryValue}
+                >
+                  {category.categoryName}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
       </div>
 
       {/* Job List & Details */}
@@ -90,7 +214,7 @@ const Home = () => {
           {filteredPosts.length === 0 ? (
             <p className="text-textMuted text-center">No jobs found 🔍</p>
           ) : (
-            filteredPosts.map((post) => (
+            sortedOptions.map((post) => (
               <JobPost
                 key={post.id}
                 post={post}
@@ -106,38 +230,7 @@ const Home = () => {
 
         {/* Sticky Job Details */}
         <div className="w-full md:w-[500px]">
-          {selectedPost && (
-            <div className="sticky top-10">
-              <div className="p-6 rounded-2xl bg-cardBg shadow-lg border-2 border-primary space-y-5 animate-fadeIn">
-                <h2 className="text-3xl font-extrabold text-textLight flex items-center gap-2">
-                  {selectedPost.title} <span className="text-primary">🔥</span>
-                </h2>
-
-                <p className="text-md text-textMuted leading-relaxed tracking-wide">
-                  {selectedPost.description}
-                </p>
-
-                <div className="space-y-2">
-                  <p className="text-lg font-semibold text-sky-400">
-                    💸 <span className="text-textLight">Salary:</span>{" "}
-                    {selectedPost.salary}
-                  </p>
-                  <p className="text-lg font-semibold text-emerald-400">
-                    🏢 <span className="text-textLight">Company:</span>{" "}
-                    {selectedPost.company}
-                  </p>
-                  <p className="text-lg font-semibold text-pink-400">
-                    📍 <span className="text-textLight">Location:</span>{" "}
-                    {selectedPost.location}
-                  </p>
-                </div>
-
-                <Link to={`/jobs/${selectedPost.id}`} className="block w-fit">
-                  <Button buttonText="Apply Now 🚀" />
-                </Link>
-              </div>
-            </div>
-          )}
+          {selectedPost && <SelectedJob selectedPost={selectedPost} />}
         </div>
       </div>
     </div>

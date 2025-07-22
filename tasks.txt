@@ -1,1 +1,3 @@
 add job  filter functionality
+
+Add animations using GSAP or Framer Motion.
