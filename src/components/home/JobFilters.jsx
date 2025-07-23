@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  experienceLevels,
   jobTypes,
   pakistaniCities,
 } from "../../utils/SearchAndFilterData/SearchAndFilterData";
@@ -14,6 +15,8 @@ const JobFilters = ({
   sortCity,
   setjobType,
   jobType,
+  setexperienceLevel,
+  experienceLevel,
 }) => {
   const clearFilters = () => {
     setsortOptions("newest");
@@ -84,6 +87,25 @@ const JobFilters = ({
             {jobTypes.map((type) => (
               <option key={type.typeValue} value={type.typeValue}>
                 {type.typeName}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Experience Level */}
+
+        <div className="flex flex-col">
+          <label className="text-sm text-textMuted mb-1">
+            Experience Level
+          </label>
+          <select
+            value={experienceLevel}
+            onChange={(e) => setexperienceLevel(e.target.value)}
+            className="bg-cardBg text-textLight border border-textMuted rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            {experienceLevels.map((type) => (
+              <option key={type.levelValue} value={type.levelValue}>
+                {type.levelName}
               </option>
             ))}
           </select>

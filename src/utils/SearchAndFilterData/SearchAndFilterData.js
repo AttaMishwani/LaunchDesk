@@ -92,7 +92,7 @@ export const jobTypes = [
 ];
 
 export const experienceLevels = [
-    { levelName: "All Levels", levelValue: "all" },
+    { levelName: "All", levelValue: "all" },
     { levelName: "Entry Level", levelValue: "entry" },
     { levelName: "Mid Level", levelValue: "mid" },
     { levelName: "Senior Level", levelValue: "senior" },

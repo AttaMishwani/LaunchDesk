@@ -12,6 +12,7 @@ import SelectedJob from "../components/home/SelectedJob";
 import HomeSearchBar from "../components/home/HomeSearchBar";
 import JobFilters from "../components/home/JobFilters";
 import { categories } from "../utils/SearchAndFilterData/SearchAndFilterData";
+import Filters from "../components/home/Filters";
 
 const Home = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -26,6 +27,7 @@ const Home = () => {
   const [sortCategory, setSortCategory] = useState("all");
   const [sortCity, setsortCity] = useState("all");
   const [jobType, setjobType] = useState("all");
+  const [experienceLevel, setexperienceLevel] = useState("all");
 
   const {
     data,
@@ -75,7 +77,16 @@ const Home = () => {
 
     const matchJobType = jobType === "all" || post.jobType === jobType;
 
-    return matchesCategory && matchesSearch && matchesCity;
+    const matchExperienceLevel =
+      experienceLevel === "all" || post.experienceLevel == experienceLevel;
+
+    return (
+      matchesCategory &&
+      matchesSearch &&
+      matchesCity &&
+      matchJobType &&
+      matchExperienceLevel
+    );
   });
 
   const sortedOptions = [...filteredPosts].sort((a, b) => {
@@ -95,18 +106,19 @@ const Home = () => {
     <div className="bg-bgc min-h-screen pt-20 px-4">
       {/* Search & Title */}
       <div className="flex flex-col items-center mb-10">
-        <HomeSearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-
-        <JobFilters
+        <Filters
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
           sortOptions={sortOptions}
           setsortOptions={setsortOptions}
           sortCategory={sortCategory}
           setSortCategory={setSortCategory}
-          categories={categories}
-          setsortCity={setsortCity}
           sortCity={sortCity}
-          setjobType={setjobType}
+          setsortCity={setsortCity}
           jobType={jobType}
+          setjobType={setjobType}
+          experienceLevel={experienceLevel}
+          setexperienceLevel={setexperienceLevel}
         />
       </div>
 

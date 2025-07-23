@@ -10,7 +10,7 @@ import {
   jobTypes,
   experienceLevels,
   pakistaniCities,
-} from "../../ui/SearchAndFilterData/SearchAndFilterData";
+} from "../../utils/SearchAndFilterData/SearchAndFilterData";
 
 const PostAJob = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
