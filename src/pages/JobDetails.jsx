@@ -59,7 +59,7 @@ const JobDetails = () => {
     const link = e.target.value;
     const convertedLink = convertGoogleDriveLink(link);
     setResumeLink(link);
-    dispatch(setResumeURL(convertedLink)); // ✅ save converted previewable link
+    dispatch(setResumeURL(convertedLink));
   };
 
   function convertGoogleDriveLink(url) {
@@ -67,49 +67,69 @@ const JobDetails = () => {
     if (match && match[1]) {
       return `https://drive.google.com/uc?id=${match[1]}`;
     }
-    return url; // fallback if not in expected format
+    return url;
   }
 
   if (loading) return <Loader />;
-  if (!job) return <div className="text-center py-12">Job not found.</div>;
+  if (!job) return <div className="text-center py-12">❌ Job not found.</div>;
 
   return (
-    <div className="mx-auto py-12 px-4 flex flex-col md:flex-row gap-8 w-full max-w-[1300px]">
-      {/* Left Side - Resume Link Input */}
-      <div className="left w-full md:w-[40%] border-2 border-blue-600 p-6 rounded-lg">
-        <h2 className="text-2xl font-bold mb-4 text-blue-700">
-          Paste Google Drive Resume Link
+    <div className="max-w-6xl mx-auto px-6 py-12 flex flex-col lg:flex-row gap-10">
+      {/* Left - Resume Input */}
+      <div className="lg:w-[40%] w-full bg-[#1f2937] border border-primary p-6 rounded-2xl shadow-md text-white">
+        <h2 className="text-2xl font-bold mb-4 text-primary">
+          📄 Upload Resume Link
         </h2>
+        <p className="text-sm text-gray-300 mb-2">
+          Please paste your **Google Drive** resume link here.
+        </p>
         <input
           type="url"
           placeholder="https://drive.google.com/..."
           value={resumeLink}
           onChange={handleResumeLinkChange}
-          className="w-full border p-2 rounded mb-4"
+          className="w-full bg-[#111827] border border-gray-600 text-white px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2 mb-4"
         />
         <NavLink to={`/screening-questions/${id}`}>
           <button
-            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg shadow-md transition duration-200 mt-6"
+            className="bg-primary hover:bg-primary text-white w-full py-3 rounded-lg font-semibold transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={!resumeLink}
           >
-            Continue
+            ➡️ Continue to Screening
           </button>
         </NavLink>
       </div>
 
-      {/* Right Side - Job Details */}
-      <div className="right w-full md:w-[60%] bg-white p-6 rounded-lg">
-        <h1 className="text-4xl font-bold text-blue-700 mb-4">{job.title}</h1>
-        <p className="text-gray-700 mb-6">{job.description}</p>
-        <p className="text-lg font-semibold text-green-700 mb-2">
-          Company: {job.company}
+      {/* Right - Job Info */}
+      <div className="lg:w-[60%] w-full  p-8 rounded-2xl shadow-md">
+        <h1 className="text-3xl font-bold text-primary mb-4">{job.title}</h1>
+
+        <p className="text-textLight text-base mb-6 leading-relaxed whitespace-pre-wrap">
+          {job.description || "No job description provided."}
         </p>
-        <p className="text-lg font-semibold text-green-700 mb-2">
-          Location: {job.location}
-        </p>
-        <p className="text-lg font-semibold text-green-700 mb-2">
-          Salary: ${job.salary}
-        </p>
+
+        <ul className="text-base space-y-2 text-textLight">
+          <li>
+            <span className="font-medium text-primary">Company:</span>{" "}
+            {job.company || "N/A"}
+          </li>
+          <li>
+            <span className="font-medium text-primary">Location:</span>{" "}
+            {job.location || "N/A"}
+          </li>
+          <li>
+            <span className="font-medium text-primary">Salary:</span>{" "}
+            {job.salary ? `Rs ${job.salary}` : "N/A"}
+          </li>
+          <li>
+            <span className="font-medium text-primary">Job Type:</span>{" "}
+            {job.jobType || "N/A"}
+          </li>
+          <li>
+            <span className="font-medium text-primary">Category:</span>{" "}
+            {job.category || "N/A"}
+          </li>
+        </ul>
       </div>
     </div>
   );

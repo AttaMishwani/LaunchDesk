@@ -11,6 +11,7 @@ import { setSavedJobs } from "../redux/bookMarkedJobsSlice";
 import SelectedJob from "../components/home/SelectedJob";
 import HomeSearchBar from "../components/home/HomeSearchBar";
 import JobFilters from "../components/home/JobFilters";
+import { categories } from "../utils/SearchAndFilterData/SearchAndFilterData";
 
 const Home = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -24,6 +25,7 @@ const Home = () => {
   const [sortOptions, setsortOptions] = useState("newest");
   const [sortCategory, setSortCategory] = useState("all");
   const [sortCity, setsortCity] = useState("all");
+  const [jobType, setjobType] = useState("all");
 
   const {
     data,
@@ -71,6 +73,8 @@ const Home = () => {
       sortCity === "all" ||
       post.location?.toLowerCase().includes(sortCity.toLowerCase());
 
+    const matchJobType = jobType === "all" || post.jobType === jobType;
+
     return matchesCategory && matchesSearch && matchesCity;
   });
 
@@ -87,89 +91,6 @@ const Home = () => {
   if (isPostLoading || isBookMarkLoading) return <Loader height={true} />;
   if (error) return <div>Error loading posts</div>;
 
-  const categories = [
-    {
-      categoryName: "All",
-      categoryValue: "all",
-    },
-    {
-      categoryName: "Web Development",
-      categoryValue: "web-development",
-    },
-    {
-      categoryName: "Data Science",
-      categoryValue: "data-science",
-    },
-    {
-      categoryName: "Graphic Design",
-      categoryValue: "graphic-design",
-    },
-    {
-      categoryName: "Content Writing",
-      categoryValue: "content-writing",
-    },
-    {
-      categoryName: "Digital Marketing",
-      categoryValue: "digital-marketing",
-    },
-    {
-      categoryName: "Cyber Security",
-      categoryValue: "cyber-security",
-    },
-    {
-      categoryName: "Marketing",
-      categoryValue: "marketing",
-    },
-    {
-      categoryName: "Finance",
-      categoryValue: "finance",
-    },
-    {
-      categoryName: "Engineering",
-      categoryValue: "engineering",
-    },
-    {
-      categoryName: "Healthcare",
-      categoryValue: "healthcare",
-    },
-    {
-      categoryName: "Education",
-      categoryValue: "education",
-    },
-    {
-      categoryName: "Sales",
-      categoryValue: "sales",
-    },
-    {
-      categoryName: "Customer Service",
-      categoryValue: "customer-service",
-    },
-    {
-      categoryName: "Human Resources",
-      categoryValue: "human-resources",
-    },
-    {
-      categoryName: "IT Support",
-      categoryValue: "it-support",
-    },
-    {
-      categoryName: "Project Management",
-      categoryValue: "project-management",
-    },
-    {
-      categoryName: "Consulting",
-      categoryValue: "consulting",
-    },
-    {
-      categoryName: "Legal",
-      categoryValue: "legal",
-    },
-    {
-      categoryName: "Administrative",
-      categoryValue: "administrative",
-    },
-  ];
-
   return (
     <div className="bg-bgc min-h-screen pt-20 px-4">
       {/* Search & Title */}
@@ -184,6 +105,8 @@ const Home = () => {
           categories={categories}
           setsortCity={setsortCity}
           sortCity={sortCity}
+          setjobType={setjobType}
+          jobType={jobType}
         />
       </div>
 

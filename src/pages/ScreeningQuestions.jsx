@@ -52,15 +52,15 @@ const ScreeningQuestions = () => {
   if (error)
     return (
       <div className="flex justify-center items-center h-screen">
-        <p className="text-red-500 text-lg">Error loading job data</p>
+        <p className="text-red-500 text-lg">❌ Error loading job data</p>
       </div>
     );
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-10">
-      <div className="w-full max-w-3xl bg-white rounded-xl shadow-lg p-8">
-        <h1 className="text-3xl font-bold text-blue-700 mb-8">
-          Screening Questions
+    <div className="min-h-screen bg-bgc flex items-center justify-center px-4 py-10">
+      <div className="w-full max-w-3xl bg-bgc rounded-2xl shadow-xl p-8">
+        <h1 className="text-3xl font-bold text-primary mb-6 text-center">
+          📝 Screening Questions
         </h1>
 
         {isLoading ? (
@@ -69,13 +69,13 @@ const ScreeningQuestions = () => {
           <form className="space-y-6" onSubmit={handleSubmit}>
             {questions.map((question, index) => (
               <div key={index}>
-                <label className="block text-gray-800 font-medium mb-2">
+                <label className="block text-textLight font-semibold mb-2">
                   {index + 1}. {question}
                 </label>
                 <textarea
-                  rows="3"
+                  rows="4"
                   placeholder="Type your answer..."
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm text-textLight focus:outline-none focus:ring-2 focus:ring-primary resize-none placeholder-gray-400"
                   value={answers[index]}
                   onChange={(e) => handleChange(index, e.target.value)}
                   required
@@ -85,14 +85,14 @@ const ScreeningQuestions = () => {
 
             <button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-md shadow-md transition duration-300"
+              className="w-full bg-primary hover:bg-[#0284c7] text-white font-semibold py-3 rounded-lg shadow-md transition duration-300"
             >
-              Next Step
+              ✅ Next Step
             </button>
           </form>
         ) : (
           <p className="text-gray-600 text-center">
-            No questions provided by the employer.
+            No questions were provided by the employer.
           </p>
         )}
       </div>
