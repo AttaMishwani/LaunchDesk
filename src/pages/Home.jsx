@@ -10,6 +10,7 @@ import { useInView } from "react-intersection-observer";
 import { setSavedJobs } from "../redux/bookMarkedJobsSlice";
 import SelectedJob from "../components/home/SelectedJob";
 import HomeSearchBar from "../components/home/HomeSearchBar";
+import JobFilters from "../components/home/JobFilters";
 
 const Home = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -22,6 +23,8 @@ const Home = () => {
   const { ref, inView } = useInView();
   const [sortOptions, setsortOptions] = useState("newest");
   const [sortCategory, setSortCategory] = useState("all");
+  const [sortCity, setsortCity] = useState("all");
+
   const {
     data,
     isLoading: isPostLoading,
@@ -64,7 +67,11 @@ const Home = () => {
     const matchesCategory =
       sortCategory === "all" || post.category === sortCategory;
 
-    return matchesCategory && matchesSearch;
+    const matchesCity =
+      sortCity === "all" ||
+      post.location?.toLowerCase().includes(sortCity.toLowerCase());
+
+    return matchesCategory && matchesSearch && matchesCity;
   });
 
   const sortedOptions = [...filteredPosts].sort((a, b) => {
@@ -169,42 +176,15 @@ const Home = () => {
       <div className="flex flex-col items-center mb-10">
         <HomeSearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-        <div className="filters flex items-center">
-          {" "}
-          <div className="mt-4">
-            <select
-              name=""
-              className="bg-cardBg text-textLight border border-textMuted rounded px-4 py-2"
-              value={sortOptions}
-              onChange={(e) => setsortOptions(e.target.value)}
-              id=""
-            >
-              <option value="newest">Sort by: Newest</option>
-              <option value="oldest">Oldest</option>
-            </select>
-          </div>
-          <div className="mt-4">
-            <label htmlFor="category-select" className="text-textLight">
-              Category:
-            </label>
-            <select
-              name="category"
-              value={sortCategory}
-              onChange={(e) => setSortCategory(e.target.value)}
-              className="bg-cardBg text-textLight border border-textMuted rounded px-4 py-2"
-              id="category-select"
-            >
-              {categories.map((category) => (
-                <option
-                  key={category.categoryValue}
-                  value={category.categoryValue}
-                >
-                  {category.categoryName}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+        <JobFilters
+          sortOptions={sortOptions}
+          setsortOptions={setsortOptions}
+          sortCategory={sortCategory}
+          setSortCategory={setSortCategory}
+          categories={categories}
+          setsortCity={setsortCity}
+          sortCity={sortCity}
+        />
       </div>
 
       {/* Job List & Details */}

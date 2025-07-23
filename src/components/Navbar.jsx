@@ -61,12 +61,12 @@ const Navbar = () => {
           {user ? (
             <>
               <li>
-                <NavLink to="/" className="hover:text-[#E11D48]">
+                <NavLink to="/" className="hover:text-primary">
                   Home
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/about" className="hover:text-[#E11D48]">
+                <NavLink to="/about" className="hover:text-primary">
                   About
                 </NavLink>
               </li>
@@ -90,7 +90,7 @@ const Navbar = () => {
                 <NavLink
                   onClick={handleCloseMenu}
                   to="/signup"
-                  className="block w-full text-center py-3 rounded-md text-white hover:bg-red-600 hover:text-white transition-colors duration-300"
+                  className="block w-full text-center py-3 rounded-md text-white hover:bg-primary hover:text-white transition-colors duration-300"
                 >
                   Sign Up
                 </NavLink>
@@ -99,7 +99,7 @@ const Navbar = () => {
                 <NavLink
                   onClick={handleCloseMenu}
                   to="/login"
-                  className="block w-full text-center py-3 rounded-md text-white hover:bg-red-600 hover:text-white transition-colors duration-300"
+                  className="block w-full text-center py-3 rounded-md text-white hover:bg-primary hover:text-white transition-colors duration-300"
                 >
                   Login
                 </NavLink>

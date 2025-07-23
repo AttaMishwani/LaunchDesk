@@ -4,15 +4,26 @@ import { db } from "../../firebase/firebase";
 import { useSelector } from "react-redux";
 import Loader from "../../ui/Loader";
 import Popup from "../../ui/Popup";
+// categories ,  jobTypes .experienceLevels ,pakistaniCities
+import {
+  categories,
+  jobTypes,
+  experienceLevels,
+  pakistaniCities,
+} from "../../ui/SearchAndFilterData/SearchAndFilterData";
 
 const PostAJob = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const [loading, setLoading] = useState(false);
   const [showPopUp, setshowPopUp] = useState(false);
+  const [location, setLocation] = useState("");
+  const [workMode, setWorkMode] = useState("");
+
   const [jobData, setjobData] = useState({
     title: "",
     description: "",
     location: "",
+    workMode: "",
     company: "",
     salary: "",
     experienceLevel: "",
@@ -40,6 +51,7 @@ const PostAJob = () => {
       experienceLevel: jobData.experienceLevel.trim(),
       jobType: jobData.jobType.trim(),
       questions: jobData.questions,
+      workMode: jobData.workMode.trim(),
     };
 
     const {
@@ -49,6 +61,7 @@ const PostAJob = () => {
       company,
       salary,
       experienceLevel,
+      workMode,
       jobType,
       category,
       questions,
@@ -62,7 +75,8 @@ const PostAJob = () => {
       !salary ||
       !experienceLevel ||
       !jobType ||
-      !category
+      !category ||
+      !workMode
     ) {
       alert("Yo! Fill in all the fields first 😤");
       return;
@@ -78,6 +92,7 @@ const PostAJob = () => {
         company,
         salary,
         experienceLevel,
+        workMode,
         jobType,
         category,
         questions: questions.filter((q) => q.trim() !== ""),
@@ -99,6 +114,7 @@ const PostAJob = () => {
         company: "",
         salary: "",
         experienceLevel: "",
+        workMode: "",
         jobType: "",
         category: "",
         questions: [""],
@@ -126,107 +142,6 @@ const PostAJob = () => {
       }));
     }
   };
-
-  const categories = [
-    {
-      categoryName: "All",
-      categoryValue: "all",
-    },
-    {
-      categoryName: "Web Development",
-      categoryValue: "web-development",
-    },
-    {
-      categoryName: "Data Science",
-      categoryValue: "data-science",
-    },
-    {
-      categoryName: "Graphic Design",
-      categoryValue: "graphic-design",
-    },
-    {
-      categoryName: "Content Writing",
-      categoryValue: "content-writing",
-    },
-    {
-      categoryName: "Digital Marketing",
-      categoryValue: "digital-marketing",
-    },
-    {
-      categoryName: "Cyber Security",
-      categoryValue: "cyber-security",
-    },
-    {
-      categoryName: "Marketing",
-      categoryValue: "marketing",
-    },
-    {
-      categoryName: "Finance",
-      categoryValue: "finance",
-    },
-    {
-      categoryName: "Engineering",
-      categoryValue: "engineering",
-    },
-    {
-      categoryName: "Healthcare",
-      categoryValue: "healthcare",
-    },
-    {
-      categoryName: "Education",
-      categoryValue: "education",
-    },
-    {
-      categoryName: "Sales",
-      categoryValue: "sales",
-    },
-    {
-      categoryName: "Customer Service",
-      categoryValue: "customer-service",
-    },
-    {
-      categoryName: "Human Resources",
-      categoryValue: "human-resources",
-    },
-    {
-      categoryName: "IT Support",
-      categoryValue: "it-support",
-    },
-    {
-      categoryName: "Project Management",
-      categoryValue: "project-management",
-    },
-    {
-      categoryName: "Consulting",
-      categoryValue: "consulting",
-    },
-    {
-      categoryName: "Legal",
-      categoryValue: "legal",
-    },
-    {
-      categoryName: "Administrative",
-      categoryValue: "administrative",
-    },
-  ];
-
-  const jobTypes = [
-    { typeName: "All Types", typeValue: "all" },
-    { typeName: "Full-time", typeValue: "full-time" },
-    { typeName: "Part-time", typeValue: "part-time" },
-    { typeName: "Contract", typeValue: "contract" },
-    { typeName: "Internship", typeValue: "internship" },
-    { typeName: "Temporary", typeValue: "temporary" },
-    { typeName: "Freelance", typeValue: "freelance" },
-  ];
-
-  const experienceLevels = [
-    { levelName: "All Levels", levelValue: "all" },
-    { levelName: "Entry Level", levelValue: "entry" },
-    { levelName: "Mid Level", levelValue: "mid" },
-    { levelName: "Senior Level", levelValue: "senior" },
-    { levelName: "Expert", levelValue: "expert" },
-  ];
 
   const removeQuestionField = (index) => {
     if (jobData.questions.length > 1) {
@@ -262,15 +177,6 @@ const PostAJob = () => {
               name="description"
               onChange={handleChange}
               rows={5}
-              className="bg-[#1f2937] border border-primary text-textLight rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-textMuted"
-            />
-
-            <input
-              type="text"
-              name="location"
-              value={jobData.location}
-              onChange={handleChange}
-              placeholder="📍 Location"
               className="bg-[#1f2937] border border-primary text-textLight rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-textMuted"
             />
 
@@ -358,6 +264,64 @@ const PostAJob = () => {
               ))}
             </select>
 
+            {/* Work Mode Checkboxes */}
+            <div className="mb-6">
+              <label className="block text-sm font-semibold text-textLight mb-2">
+                Work Mode
+              </label>
+              <div className="flex flex-wrap gap-6 items-center">
+                <label className="flex items-center gap-2 text-textMuted cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={workMode === "remote"}
+                    onChange={() => {
+                      setWorkMode("remote");
+                      setjobData((prev) => ({
+                        ...prev,
+                        workMode: "remote",
+                        location: "Remote",
+                      }));
+                    }}
+                    className="accent-primary w-4 h-4"
+                  />
+                  Remote
+                </label>
+
+                <label className="flex items-center gap-2 text-textMuted cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={workMode === "onsite"}
+                    onChange={() => {
+                      setWorkMode("onsite");
+                      setjobData((prev) => ({
+                        ...prev,
+                        workMode: "onsite",
+                        location: "",
+                      }));
+                    }}
+                    className="accent-primary w-4 h-4"
+                  />
+                  Onsite
+                </label>
+
+                {workMode === "onsite" && (
+                  <select
+                    name="location"
+                    value={jobData.location}
+                    onChange={handleChange}
+                    className="mt-3 sm:mt-0 sm:ml-4 bg-[#1f2937] border border-primary text-textLight rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary transition w-full sm:w-auto"
+                  >
+                    <option value="">Select City</option>
+                    {pakistaniCities.map((city) => (
+                      <option key={city} value={city}>
+                        {city}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+            </div>
+
             <h2 className="text-lg font-semibold mt-4 text-textMuted">
               🧠 Optional Screening Questions
             </h2>
@@ -400,7 +364,7 @@ const PostAJob = () => {
               disabled={loading}
               className="bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200 text-white px-6 py-3 rounded-xl mt-6 font-bold shadow"
             >
-              {loading ? "⏳ Posting..." : "✨ Submit Job"}
+              {loading ? "Posting..." : "Submit Job"}
             </button>
           </form>
         </>
