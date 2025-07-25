@@ -18,6 +18,8 @@ import Review from "./pages/Review";
 import ThankYou from "./pages/ThankYou";
 import ViewJobApplicants from "./pages/ViewJobApplicants";
 import SavedJobs from "./pages/SavedJobs";
+import SingleJobPage from "./pages/JobPage";
+import JobPage from "./pages/JobPage";
 
 function Loader() {
   return (
@@ -170,6 +172,15 @@ function App() {
           element={
             <RequireAuth>
               <ViewJobApplicants />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="jobpage/:id"
+          element={
+            <RequireAuth>
+              <JobPage />
             </RequireAuth>
           }
         />

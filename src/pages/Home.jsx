@@ -103,7 +103,7 @@ const Home = () => {
   if (error) return <div>Error loading posts</div>;
 
   return (
-    <div className="bg-bgc min-h-screen pt-20 px-4">
+    <div className="bg-bgc min-h-screen pt-6 px-4">
       {/* Search & Title */}
       <div className="flex flex-col items-center mb-10">
         <Filters

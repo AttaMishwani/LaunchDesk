@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { db } from "../../firebase/firebase";
 import Loader from "../../ui/Loader";
+import { Link } from "react-router-dom";
 
 const JobsApplied = () => {
   const [applications, setApplications] = useState([]);
@@ -35,13 +36,19 @@ const JobsApplied = () => {
             const jobSnap = await getDoc(jobRef);
 
             return {
-              id: docsnap.data(),
+              id: docsnap.id,
               ...appData,
               jobDetails: jobSnap.exists() ? jobSnap.data() : {},
             };
           })
         );
         setApplications(apps);
+        console.log(applications);
+        console.log("Docs fetched:", querySnapshot.docs.length);
+        console.log(
+          "Docs:",
+          querySnapshot.docs.map((d) => d.data())
+        );
       } catch (error) {
         console.error("Error fetching applications:", error);
       } finally {
@@ -54,7 +61,7 @@ const JobsApplied = () => {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-3xl font-bold text-blue-700 mb-6">Jobs Applied</h2>
+      <h2 className="text-3xl font-bold text-textLight mb-6">Jobs Applied</h2>
 
       {loading ? (
         <Loader />
@@ -64,18 +71,18 @@ const JobsApplied = () => {
         applications.map((app) => (
           <div
             key={app.id}
-            className="p-4 border border-gray-200 rounded-lg shadow-sm bg-white"
+            className="p-4 border border-primary rounded-lg shadow-sm bg-cardBg"
           >
-            <h3 className="text-xl font-semibold text-blue-600">
+            <h3 className="text-xl font-semibold text-primary">
               {app.jobDetails.title || "Untitled Job"}
             </h3>
-            <p className="text-gray-700 mb-1">
+            <p className="text-textLight mb-1">
               <strong>Company:</strong> {app.jobDetails.company || "N/A"}
             </p>
-            <p className="text-gray-700 mb-1">
+            <p className="text-textLight mb-1">
               <strong>Location:</strong> {app.jobDetails.location || "N/A"}
             </p>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-textLight mb-4">
               <strong>Applied On:</strong>{" "}
               {app.createdAt?.toDate?.().toLocaleDateString() || "Unknown"}
             </p>
@@ -84,11 +91,16 @@ const JobsApplied = () => {
                 href={app.resumeURL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-500 underline text-sm mt-2 inline-block"
+                className="inline-block mr-3 bg-primary text-textLight py-2 px-5 rounded-md"
               >
                 View Resume
               </a>
             )}
+
+            <button className="bg-primary text-textLight py-2 px-5 rounded-md">
+              {" "}
+              <Link to={`/jobpage/${app.jobId}`}> View Job</Link>{" "}
+            </button>
           </div>
         ))
       )}
