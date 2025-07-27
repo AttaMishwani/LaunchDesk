@@ -7,10 +7,12 @@ import {
   getDoc,
   getDocs,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import Loader from "../ui/Loader";
+import { toast } from "react-toastify";
 
 const ViewJobApplicants = () => {
   const { jobId } = useParams();
@@ -52,7 +54,7 @@ const ViewJobApplicants = () => {
           .filter(
             (app) => app.ownerId === user.uid || app.applicantId === user.uid
           );
-        console.log(filteredApplicants);
+
         setApplicants(filteredApplicants);
       } catch (err) {
         console.error("❌ Error fetching applicants:", err);
@@ -84,6 +86,26 @@ const ViewJobApplicants = () => {
       fetchJobTitle();
     }
   }, [jobId, user]);
+
+  const updateJobStatus = async (applicantId, newstatus) => {
+    const applicationRef = doc(db, "applications", applicantId);
+    // console.log(applicationRef);
+    try {
+      const applicationSnap = await getDoc(applicationRef);
+
+      if (!applicationSnap.exists()) {
+        toast.error("Application not found.");
+        return;
+      }
+      await updateDoc(applicationRef, {
+        jobstatus: newstatus,
+      });
+      toast.success("application status updated");
+      console.log("job status updated succesfully");
+    } catch (error) {
+      toast.error("failed to update the status");
+    }
+  };
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
@@ -143,6 +165,29 @@ const ViewJobApplicants = () => {
                   <span className="text-gray-500">Not uploaded</span>
                 )}
               </p>
+              {applicant.jobstatus === "accepted" && (
+                <p>application accepted</p>
+              )}
+              {applicant.jobstatus === "rejected" && (
+                <p>application rejected</p>
+              )}
+              {applicant.jobstatus === "pending" && (
+                <div className="flex flex-row mt-3">
+                  <p>Set Application Status: </p>
+                  <button
+                    onClick={() => updateJobStatus(applicant.id, "accepted")}
+                    className="bg-green-400 text-white py-1 px-3 font-bold rounded-sm mx-2"
+                  >
+                    Accept
+                  </button>
+                  <button
+                    onClick={() => updateJobStatus(applicant.id, "rejected")}
+                    className="bg-red-500 text-white py-1 px-3 font-bold rounded-sm mx-2"
+                  >
+                    Reject
+                  </button>
+                </div>
+              )}
             </li>
           ))}
         </ul>

@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Button from "../../ui/Button";
+import { useSelector } from "react-redux";
 
 const SelectedJob = ({ selectedPost }) => {
+  const currentUser = useSelector((state) => state.user.currentUser);
   return (
     <div className="sticky top-10 ">
       <div className="p-6 rounded-2xl bg-cardBg shadow-lg border-2 border-primary space-y-5 animate-fadeIn">
@@ -44,7 +46,7 @@ const SelectedJob = ({ selectedPost }) => {
         </div>
 
         <Link to={`/jobs/${selectedPost.id}`} className="block w-fit">
-          <Button buttonText="Apply Now 🚀" />
+          <Button userType={"Recruiter"} buttonText="Apply Now 🚀" />
         </Link>
       </div>
     </div>

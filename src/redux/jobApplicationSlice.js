@@ -5,6 +5,7 @@ const initialState = {
     resumeURL: null,
     answers: [],
     userInfo: null,
+    jobstatus: "pending"
 }
 
 
@@ -24,6 +25,9 @@ const jobApplicationSlice = createSlice({
         setUserInfo: (state, action) => {
             state.userInfo = action.payload;
         },
+        setJobStatus: (state, action) => {
+            state.jobstatus = action.payload;
+        },
         resetApplication: (state) => {
             state.jobId = null;
             state.resumeURL = null;
@@ -38,6 +42,7 @@ export const {
     setJobId,
     setResumeURL,
     setAnswers,
+    setJobStatus,
     setUserInfo,
     resetApplication
 } = jobApplicationSlice.actions;

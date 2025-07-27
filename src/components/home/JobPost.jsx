@@ -71,9 +71,17 @@ const JobPost = ({ post, setselectedPost }) => {
       <p className="text-textMuted mb-4 line-clamp-3">{post.description}</p>
       <div className="flex justify-between items-center">
         <p className="font-semibold text-lg text-primary">💰 {post.salary}</p>
-        <span className="text-sm bg-primary text-white px-3 py-1 rounded-full">
+        <button
+          disabled={currentUser?.type === "Recruiter"}
+          className={`text-sm px-3 py-1 rounded-full transition 
+    ${
+      currentUser?.type === "Recruiter"
+        ? "bg-[#103d52] cursor-not-allowed opacity-60"
+        : "bg-primary  cursor-pointer"
+    } text-white`}
+        >
           Apply Now
-        </span>
+        </button>
       </div>
     </div>
   );
