@@ -69,14 +69,14 @@ const DeleteAccount = () => {
   };
 
   return (
-    <div className="min-h-screen pt-20 px-4 text-center">
+    <div className=" pt-20 px-4 text-center">
       <h2 className="text-2xl font-bold mb-4 text-red-500">Delete Account</h2>
       <p className="mb-6 text-textMuted">
         This will permanently delete your account and all your data. This action
         cannot be undone.
       </p>
 
-      <div className="input-container flex flex-col">
+      <div className="input-container flex flex-col items-center">
         <input
           type="email"
           placeholder="Enter your email"

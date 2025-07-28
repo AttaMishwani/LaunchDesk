@@ -38,16 +38,11 @@ const Profile = () => {
 
   const getOptionsByRole = (role) => {
     if (role === "JobSeeker") {
-      return ["👤 Account Info", "🗑️ Delete Account", "📌 Jobs Applied"];
+      return ["Account Info", "Delete Account", "Jobs Applied"];
     } else if (role === "Recruiter") {
-      return [
-        "👤 Account Info",
-        "📢 Post a Job",
-        "🗑️ Delete Account",
-        "📋 Jobs Posted",
-      ];
+      return ["Account Info", "Post a Job", "Delete Account", "Jobs Posted"];
     } else {
-      return ["👤 Account Info"];
+      return ["Account Info"];
     }
   };
 
@@ -62,7 +57,7 @@ const Profile = () => {
   if (!currentUser) {
     return (
       <div className="text-center mt-20 text-xl font-semibold text-white animate-pulse">
-        Loading profile… ⚡
+        Loading profile…
       </div>
     );
   }
@@ -72,15 +67,15 @@ const Profile = () => {
 
   const renderContent = () => {
     switch (selectedOption) {
-      case "👤 Account Info":
+      case "Account Info":
         return <AccountInformation user={currentUser} />;
-      case "📢 Post a Job":
+      case "Post a Job":
         return <PostAJob />;
-      case "🗑️ Delete Account":
+      case "Delete Account":
         return <DeleteAccount />;
-      case "📋 Jobs Posted":
+      case "Jobs Posted":
         return <JobsPosted />;
-      case "📌 Jobs Applied":
+      case "Jobs Applied":
         return <JobsApplied />;
       default:
         return <AccountInformation user={currentUser} />;
@@ -91,9 +86,9 @@ const Profile = () => {
     <div className="w-full min-h-screen bg-gradient-to-br  text-white pt-10 px-4 sm:px-8">
       <div className="flex flex-col md:flex-row gap-6 max-w-7xl mx-auto">
         {/* Sidebar */}
-        <div className="w-full md:w-[260px] bg-[#1f2235] rounded-2xl  p-6 space-y-4 border border-[#31344b]">
+        <div className="w-full md:w-[260px] bg-[#1f2235] rounded-2xl max-h-[90vh] min-h-[90vh]  p-6 space-y-4 border border-[#31344b]">
           <h2 className="text-2xl font-extrabold text-primary mb-4">
-            Yo, {currentUser.username?.split(" ")[0] || "User"} 👋
+            Hey, {currentUser.username?.split(" ")[0] || "User"}
           </h2>
           {options.map((option, index) => (
             <div
@@ -113,12 +108,12 @@ const Profile = () => {
             onClick={handleLogout}
             className="w-full mt-6 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-xl transition duration-200"
           >
-            🚪 Logout
+            Logout
           </button>
         </div>
 
         {/* Main content */}
-        <div className="flex-1 bg-[#1f2235] border border-[#31344b] rounded-2xl  p-6">
+        <div className="flex-1 bg-[#1f2235] border border-[#31344b] rounded-2xl max-h-[90vh] min-h-[90vh] overflow-y-auto custom-scrollbar p-6">
           {renderContent()}
         </div>
       </div>

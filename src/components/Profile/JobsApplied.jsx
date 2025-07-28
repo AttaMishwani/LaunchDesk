@@ -36,12 +36,12 @@ const JobsApplied = () => {
     <div className="space-y-6">
       <h2 className="text-3xl font-bold text-textLight mb-6">Jobs Applied</h2>
 
-      <ul className="flex">
+      <ul className="flex border-b-2 border-gray-400">
         <li
           onClick={() => setTab("pending")}
           className={`${
             tab === "pending" ? "bg-primary" : "bg-none"
-          } py-[10px]  px-5 border-2 border-b-gray-400 border-t-0 border-b-0 hover:bg-primary`}
+          } py-[10px]  px-5 border-2 border-b-gray-400 border-t-0 border-r-0 border-b-0 hover:bg-primary`}
         >
           PENDING
         </li>
@@ -49,7 +49,7 @@ const JobsApplied = () => {
           onClick={() => setTab("accepted")}
           className={`${
             tab === "accepted" ? "bg-primary" : "bg-none"
-          } py-[10px]  px-5 border-2 border-b-gray-400 border-t-0 border-b-0 hover:bg-primary`}
+          } py-[10px]  px-5 border-2 border-b-gray-400 border-t-0 border-r-0 border-b-0 hover:bg-primary`}
         >
           ACCEPTED
         </li>

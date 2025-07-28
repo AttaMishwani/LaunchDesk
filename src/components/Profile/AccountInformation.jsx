@@ -112,11 +112,9 @@ const AccountInformation = ({ user }) => {
     }
   };
 
-  const renderField = (label, name, icon = "") => (
+  const renderField = (label, name) => (
     <div className="flex flex-col gap-1">
-      <label className="text-sm text-textMuted mb-1">
-        {icon} {label}
-      </label>
+      <label className="text-sm text-textMuted mb-1">{label}</label>
       {editingMode ? (
         <input
           type="text"
@@ -134,7 +132,7 @@ const AccountInformation = ({ user }) => {
 
   const renderResumeSection = () => (
     <div className="flex flex-col">
-      <label className="text-sm text-textMuted mb-1">📎 Resume</label>
+      <label className="text-sm text-textMuted mb-1">Resume</label>
       {editingMode ? (
         <div className="flex flex-col gap-2">
           <input
@@ -166,25 +164,23 @@ const AccountInformation = ({ user }) => {
 
   if (loading || !user)
     return (
-      <div className="text-center mt-10 text-textLight">
-        ⏳ Loading profile...
-      </div>
+      <div className="text-center mt-10 text-textLight">Loading profile...</div>
     );
 
   return (
     <div className="bg-cardBg text-textLight shadow-xl border border-primary rounded-2xl p-8 max-w-3xl mx-auto mt-10 animate-fadeIn">
       <h2 className="text-3xl font-extrabold mb-6 text-primary">
-        👤 Your Profile
+        Your Profile
       </h2>
 
       <div className="grid sm:grid-cols-2 gap-6">
-        {renderField("Username", "username", "👾")}
-        {renderField("Email", "email", "📧")}
-        {renderField("Phone", "phone", "📱")}
-        {renderField("Skills", "skills", "💡")}
-        {renderField("Bio", "bio", "🧠")}
-        {renderField("GitHub", "github", "🐙")}
-        {renderField("LinkedIn", "linkedin", "💼")}
+        {renderField("Username", "username")}
+        {renderField("Email", "email")}
+        {renderField("Phone", "phone")}
+        {renderField("Skills", "skills")}
+        {renderField("Bio", "bio")}
+        {renderField("GitHub", "github")}
+        {renderField("LinkedIn", "linkedin")}
         {renderResumeSection()}
       </div>
 

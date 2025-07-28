@@ -33,7 +33,7 @@ const JobPost = ({ post, setselectedPost }) => {
 
     if (isSaved) {
       dispatch(removeSavedJob(jobId));
-      toast.success("Removed from bookmarks 💔");
+      toast.success("Removed from bookmarks");
       const q = query(
         collection(db, "savedJobs"),
         where("userId", "==", currentUser.uid),
@@ -70,7 +70,7 @@ const JobPost = ({ post, setselectedPost }) => {
       <h3 className="text-2xl font-bold text-primary mb-2">{post.title}</h3>
       <p className="text-textMuted mb-4 line-clamp-3">{post.description}</p>
       <div className="flex justify-between items-center">
-        <p className="font-semibold text-lg text-primary">💰 {post.salary}</p>
+        <p className="font-semibold text-lg text-primary">{post.salary}</p>
         <button
           disabled={currentUser?.type === "Recruiter"}
           className={`text-sm px-3 py-1 rounded-full transition 

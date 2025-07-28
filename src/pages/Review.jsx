@@ -69,32 +69,32 @@ const Review = () => {
         <Loader />
       ) : (
         <div className="flex flex-col">
-          <h1 className="text-4xl font-bold text-blue-700 mb-8 text-center">
+          <h1 className="text-4xl font-bold text-primary mb-8 text-center">
             Review Your Application
           </h1>
 
           {/* Job Details */}
-          <div className="bg-white p-6 rounded-lg shadow mb-8 border border-blue-100">
-            <h2 className="text-2xl font-semibold text-blue-600 mb-2">
+          <div className="bg-cardBg p-6 rounded-xl shadow border border-primary mb-8">
+            <h2 className="text-2xl font-semibold text-primary mb-2">
               {jobDetails?.title || "Job Title"}
             </h2>
-            <p className="text-gray-700 mb-1">
+            <p className="text-textLight mb-1">
               <strong>Company:</strong> {jobDetails?.company || "N/A"}
             </p>
-            <p className="text-gray-700 mb-1">
+            <p className="text-textLight mb-1">
               <strong>Location:</strong> {jobDetails?.location || "N/A"}
             </p>
-            <p className="text-gray-700 mb-1">
+            <p className="text-textLight mb-1">
               <strong>Salary:</strong> ${jobDetails?.salary || "N/A"}
             </p>
-            <p className="text-gray-700 mt-2">
+            <p className="text-textLight mt-2">
               {jobDetails?.description || "No description available."}
             </p>
           </div>
 
           {/* Resume */}
-          <div className="bg-white p-6 rounded-lg shadow mb-8 border border-blue-100">
-            <h2 className="text-2xl font-semibold text-blue-600 mb-4">
+          <div className="bg-cardBg p-6 rounded-xl shadow border border-primary mb-8">
+            <h2 className="text-2xl font-semibold text-primary mb-4">
               Resume Preview
             </h2>
 
@@ -111,24 +111,25 @@ const Review = () => {
           </div>
 
           {/* QA Answers */}
-          <div className="bg-white p-6 rounded-lg shadow mb-8 border border-blue-100">
-            <h2 className="text-2xl font-semibold text-blue-600 mb-4">
+          <div className="bg-cardBg p-6 rounded-xl shadow border border-primary mb-8">
+            <h2 className="text-2xl font-semibold text-primary mb-4">
               Screening Answers
             </h2>
-            {QA.length > 0 ? (
+
+            {QA && QA.length > 0 ? (
               QA.map((qa, index) => (
                 <div key={index} className="mb-4">
-                  <p className="font-semibold text-gray-800">
+                  <p className="font-semibold text-textLight">
                     Q{index + 1}: {qa.question}
                   </p>
-                  <p className="text-gray-700 mt-1">
+                  <p className="text-textLight mt-1">
                     <strong>Answer:</strong>{" "}
-                    {qa.answer || "No answer provided."}
+                    {qa.answer ? qa.answer : "No answer provided."}
                   </p>
                 </div>
               ))
             ) : (
-              <p className="text-gray-500">No answers submitted.</p>
+              <p className="text-textLight">No answers submitted.</p>
             )}
           </div>
 
@@ -136,7 +137,7 @@ const Review = () => {
           <div className="text-center">
             <button
               onClick={handleSubmitApplication}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold py-3 px-8 rounded-lg transition duration-200"
+              className="bg-primary hover:bg-opacity-90 text-white text-lg font-semibold py-3 px-8 rounded-lg transition-all duration-200"
             >
               Submit Application
             </button>

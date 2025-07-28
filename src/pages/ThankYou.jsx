@@ -6,16 +6,16 @@ const ThankYou = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="bg-white p-8 rounded-xl shadow-lg text-center max-w-md w-full">
-        <CheckCircle className="h-16 w-16 text-green-600 mx-auto mb-4" />
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">Thank You!</h1>
-        <p className="text-gray-600 mb-6">
+    <div className="min-h-screen flex items-center justify-center bg-bgc px-4">
+      <div className="bg-white dark:bg-cardBg p-8 rounded-2xl shadow-md text-center max-w-md w-full border border-primary">
+        <CheckCircle className="h-16 w-16 text-primary mx-auto mb-4" />
+        <h1 className="text-3xl font-bold text-primary mb-2">Thank You!</h1>
+        <p className="text-textLight mb-6">
           Your job application has been submitted successfully.
         </p>
         <button
           onClick={() => navigate("/")}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition duration-200"
+          className="bg-primary hover:bg-opacity-90 text-white font-semibold py-2 px-6 rounded-md transition-all duration-200"
         >
           Go to Home
         </button>

@@ -8,9 +8,13 @@ const SelectedJob = ({ selectedPost }) => {
   return (
     <div className="sticky top-10 ">
       <div className="p-6 rounded-2xl bg-cardBg shadow-lg border-2 border-primary space-y-5 animate-fadeIn">
-        <h2 className="text-3xl font-extrabold border-b-2 border-primary pb-5 text-textLight flex items-center gap-2">
+        <h2 className="text-3xl font-extrabold  text-textLight flex items-center gap-2">
           {selectedPost.title}
         </h2>
+        <p className="text-lg font-semibold text-textLight pb-2 border-b-2 border-primary ">
+          Company:
+          <span className="text-primary"> {selectedPost.company}</span>
+        </p>
 
         <div className="max-h-[350px] overflow-y-auto custom-scrollbar pr-2">
           <p className="text-md text-textMuted leading-relaxed tracking-wide">
@@ -21,10 +25,7 @@ const SelectedJob = ({ selectedPost }) => {
             Salary:
             <span className="text-primary"> {selectedPost.salary}</span>
           </p>
-          <p className="text-lg font-semibold text-textLight ">
-            Company:
-            <span className="text-primary"> {selectedPost.company}</span>
-          </p>
+
           <p className="text-lg font-semibold text-textLight ">
             Location:
             <span className="text-primary"> {selectedPost.location}</span>
@@ -46,7 +47,7 @@ const SelectedJob = ({ selectedPost }) => {
         </div>
 
         <Link to={`/jobs/${selectedPost.id}`} className="block w-fit">
-          <Button userType={"Recruiter"} buttonText="Apply Now 🚀" />
+          <Button userType={"Recruiter"} buttonText="Apply Now" />
         </Link>
       </div>
     </div>
